@@ -27,6 +27,12 @@ trait Lockable
                 return true;
             }
 
+            if ($model->lockable()->expires_at < Carbon::now())
+            {
+                $model->lockable()->delete();
+                return true;
+            }
+
             // throw an exception
             throw new Exception('User does not hold the lock to this model.');
 
@@ -37,6 +43,10 @@ trait Lockable
 
     public function isLocked()
     {
+        if ($this->lockable()->expires_at < Carbon::now())
+        {
+            $model->lockable()->delete();
+        }
         return (bool) $this->lockable()->count();
     }
 
@@ -57,7 +67,6 @@ trait Lockable
             'locked_by' => Auth::id(),
             'expires_at' => Carbon::now()->addSeconds(config('lockable.duration', '3600'))]);
 
-        // save the update
         return true
     }
 
@@ -71,9 +80,7 @@ trait Lockable
         // set the flag to make sure that locks can be released
         $this->acquiringLock = true;
         $this->lockable()->delete(); // locked_by = null;
-        // set the column required to clear the lock
 
-        // save the update
         return true
     }
 }
