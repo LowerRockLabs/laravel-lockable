@@ -70,11 +70,7 @@ trait IsLockable
     {
         // set the flag to make sure that locks can be acquired
         $this->acquiringLock = true;
-<<<<<<< HEAD
         if (!$this->isLocked()) {
-=======
-        if (! $this->isLocked()) {
->>>>>>> 89fbf90b47162826e6bad452b3414182187ba5f4
             $lock = $this->lockable()->firstOrNew();
             $lock->user_id = Auth::id();
             $lock->expires_at = Carbon::now()->addSeconds(config('lockable.duration', '3600'));
@@ -82,10 +78,7 @@ trait IsLockable
 
             return true;
         }
-<<<<<<< HEAD
-=======
 
->>>>>>> 89fbf90b47162826e6bad452b3414182187ba5f4
         return false;
     }
 
