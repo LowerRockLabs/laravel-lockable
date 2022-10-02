@@ -34,7 +34,6 @@ class LockableServiceProvider extends PackageServiceProvider
         // $this->loadRoutesFrom(__DIR__ . '/../routes/lockable.php');
 
         if ($this->app->runningInConsole()) {
-
             if (! class_exists(\CreateModelLocksTable::class)) {
                 $timestamp = date('Y_m_d_His');
 
@@ -76,8 +75,5 @@ class LockableServiceProvider extends PackageServiceProvider
         });
 
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'lockable');
-
-
     }
-
 }
