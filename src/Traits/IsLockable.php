@@ -49,10 +49,11 @@ trait IsLockable
 
     public function isLocked()
     {
-        if (!empty($this->lockable) && Carbon::now()->gte($this->lockable->expires_at)) {
+        if (! empty($this->lockable) && Carbon::now()->gte($this->lockable->expires_at)) {
             $this->releaseLock();
+
             return false;
-        } elseif (!empty($this->lockable) && $this->lockable->user_id != Auth::id()) {
+        } elseif (! empty($this->lockable) && $this->lockable->user_id != Auth::id()) {
             return true;
         } else {
             return false;
