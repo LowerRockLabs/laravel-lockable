@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace LowerRockLabs\Lockable\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LockableCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-lockable';
 
     public $description = 'My command';
 
