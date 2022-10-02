@@ -16,6 +16,7 @@ trait IsLockable
 
     public $lockDuration;
 
+
     public static function bootIsLockable()
     {
         static::updating(function (Model $model) {
@@ -72,14 +73,12 @@ trait IsLockable
         // set the flag to make sure that locks can be acquired
         $this->acquiringLock = true;
         if (! $this->isLocked()) {
+            $this->lockDuration = (isset($this->modelLockDuration) ? $this->modelLockDuration : config('lockable.duration', '3600'));
+
             $lock = $this->lockable()->firstOrNew();
             $lock->user_id = Auth::id();
-            if (isset($this->lockDuration) && is_int($this->lockDuration)) {
-                $duration = $this->lockDuration;
-            } else {
-                $duration = config('lockable.duration', '3600');
-            }
-            $lock->expires_at = Carbon::now()->addSeconds();
+
+            $lock->expires_at = Carbon::now()->addSeconds($this->lockDuration);
             $lock->save();
 
             return true;
@@ -98,6 +97,7 @@ trait IsLockable
         // set the flag to make sure that locks can be released
         $this->acquiringLock = true;
         $lockables = $this->lockable->first()->delete();
+
         return true;
     }
 }
