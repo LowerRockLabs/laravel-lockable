@@ -32,10 +32,7 @@ trait IsLockable
                 return true;
             }
 
-            // throw an exception
             throw new Exception('User does not hold the lock to this model.');
-            // stop the update
-            return false;
         });
 
         static::updated(function (Model $model) {
