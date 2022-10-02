@@ -4,5 +4,5 @@
 return [
 
     // Time in Seconds For Lock To Persist
-    'duration' => '3600'
+    'duration' => '3600',
 ];

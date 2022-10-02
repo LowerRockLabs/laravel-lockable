@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use LowerRockLabs\Lockable\Models\ModelLock;
 
 trait Lockable
 {
@@ -27,15 +26,14 @@ trait Lockable
                 return true;
             }
 
-            if ($model->lockable()->expires_at < Carbon::now())
-            {
+            if ($model->lockable()->expires_at < Carbon::now()) {
                 $model->lockable()->delete();
+
                 return true;
             }
 
             // throw an exception
             throw new Exception('User does not hold the lock to this model.');
-
             // stop the update
             return false;
         });
@@ -43,18 +41,17 @@ trait Lockable
 
     public function isLocked()
     {
-        if ($this->lockable()->expires_at < Carbon::now())
-        {
+        if ($this->lockable()->expires_at < Carbon::now()) {
             $model->lockable()->delete();
         }
+
         return (bool) $this->lockable()->count();
     }
-
 
     /**
      * Acquire the lock for this model
      *
-     * @return boolean
+     * @return bool
      */
     public function acquireLock(): bool
     {
@@ -65,7 +62,7 @@ trait Lockable
 
         $this->lockable()->firstOrNew([
             'locked_by' => Auth::id(),
-            'expires_at' => Carbon::now()->addSeconds(config('lockable.duration', '3600'))]);
+            'expires_at' => Carbon::now()->addSeconds(config('lockable.duration', '3600')), ]);
 
         return true;
     }
@@ -73,7 +70,7 @@ trait Lockable
     /**
      * Release the lock for this model
      *
-     * @return boolean
+     * @return bool
      */
     public function releaseLock(): bool
     {

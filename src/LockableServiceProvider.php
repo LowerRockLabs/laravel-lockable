@@ -38,13 +38,12 @@ class LockableServiceProvider extends PackageServiceProvider
                 $timestamp = date('Y_m_d_His');
 
                 $this->publishes([
-                    __DIR__ . '/../database/migrations/create_model_locks_table.php' => database_path("/migrations/{$timestamp}_create_model_locks_table.php"),
+                    __DIR__.'/../database/migrations/create_model_locks_table.php' => database_path("/migrations/{$timestamp}_create_model_locks_table.php"),
                 ], 'migrations');
             }
 
-
             $this->publishes([
-                __DIR__ . '/../config/config.php' => config_path('lockable.php'),
+                __DIR__.'/../config/config.php' => config_path('lockable.php'),
             ], 'config');
 
             // Publishing the views.

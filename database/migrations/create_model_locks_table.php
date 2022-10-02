@@ -19,7 +19,7 @@ class CreateModelLocksTable extends Migration
         });
     }
 
-        /**
+    /**
      * Reverse the migrations.
      *
      * @return void
@@ -28,4 +28,4 @@ class CreateModelLocksTable extends Migration
     {
         Schema::dropIfExists('model_locks');
     }
-};
+}
