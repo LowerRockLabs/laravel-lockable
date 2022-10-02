@@ -13,6 +13,7 @@ trait IsLockable
     private $acquiringLock = false;
 
     public $modelLockable = true;
+    public $lockDuration;
 
     public static function bootIsLockable()
     {
@@ -72,7 +73,15 @@ trait IsLockable
         if (! $this->isLocked()) {
             $lock = $this->lockable()->firstOrNew();
             $lock->user_id = Auth::id();
-            $lock->expires_at = Carbon::now()->addSeconds(config('lockable.duration', '3600'));
+            if (isset($this->lockDuration) && is_int($this->lockDuration))
+            {
+                $duration = $this->lockDuration;
+            }
+            else
+            {
+                $duration = config('lockable.duration', '3600')
+            }
+            $lock->expires_at = Carbon::now()->addSeconds($duration);
             $lock->save();
 
             return true;
