@@ -78,6 +78,7 @@ trait IsLockable
 
             return true;
         }
+
         return false;
     }
 
@@ -90,8 +91,14 @@ trait IsLockable
     {
         // set the flag to make sure that locks can be released
         $this->acquiringLock = true;
+<<<<<<< HEAD
         return static::withoutEvents(function () {
+=======
+
+        return static::withoutEvents(function () use ($this) {
+>>>>>>> 62c319e3a2c4da031d1c1ef1b3b7c25ea7e75b0f
             $this->lockable()->delete();
+
             return true;
         });
     }
