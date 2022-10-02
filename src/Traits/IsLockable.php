@@ -16,7 +16,6 @@ trait IsLockable
 
     public $lockDuration;
 
-
     public static function bootIsLockable()
     {
         static::updating(function (Model $model) {
