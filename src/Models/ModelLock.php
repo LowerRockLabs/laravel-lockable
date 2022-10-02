@@ -23,7 +23,6 @@ class ModelLock extends Model
      *
      * @var array
      */
-
     protected $dispatchesEvents = [
         'created' => ModelWasLocked::class,
         'deleted' => ModelWasUnLocked::class,
