@@ -81,6 +81,6 @@ trait Lockable
         $this->acquiringLock = true;
         $this->lockable()->delete(); // locked_by = null;
 
-        return true
+        return true;
     }
 }
