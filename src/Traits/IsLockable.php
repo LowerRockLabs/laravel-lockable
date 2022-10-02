@@ -11,7 +11,9 @@ use LowerRockLabs\Lockable\Models\ModelLock;
 trait IsLockable
 {
     private $acquiringLock = false;
+
     public $modelLockable = true;
+
     public $lockDuration;
 
     public static function bootIsLockable()
