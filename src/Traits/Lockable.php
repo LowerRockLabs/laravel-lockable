@@ -67,7 +67,7 @@ trait Lockable
             'locked_by' => Auth::id(),
             'expires_at' => Carbon::now()->addSeconds(config('lockable.duration', '3600'))]);
 
-        return true
+        return true;
     }
 
     /**
