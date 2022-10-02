@@ -40,20 +40,28 @@ This is the contents of the published config file:
 
 ```php
 return [
+ 'duration' => '3600',
 ];
 ```
 
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="laravel-lockable-views"
-```
 
 ## Usage
 
+In the Model(s) that you wish to be lockable, add the IsLockable Trait
+
 ```php
-$lockable = new LowerRockLabs\Lockable();
-echo $lockable->echoPhrase('Hello, LowerRockLabs!');
+use LowerRockLabs\Lockable\Traits\IsLockable;
+```
+
+and 
+
+```php
+use IsLockable;
+```
+
+You can override the Lock Duration (in seconds) on a per-model basis by setting the following in your Model, for example
+```php
+public $modelLockDuration = "600";
 ```
 
 ## Testing
