@@ -2,9 +2,9 @@
 
 namespace LowerRockLabs\Lockable;
 
+use LowerRockLabs\Lockable\Commands\LockableCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use LowerRockLabs\Lockable\Commands\LockableCommand;
 
 class LockableServiceProvider extends PackageServiceProvider
 {
