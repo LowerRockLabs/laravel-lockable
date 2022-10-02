@@ -11,6 +11,7 @@ use LowerRockLabs\Lockable\Models\ModelLock;
 trait IsLockable
 {
     private $acquiringLock = false;
+
     public $modelLockable = true;
 
     public static function bootIsLockable()
@@ -24,7 +25,7 @@ trait IsLockable
                 return true;
             }
 
-            if (!empty($model->lockable) && $model->lockable->user_id == Auth::id()) {
+            if (! empty($model->lockable) && $model->lockable->user_id == Auth::id()) {
                 return true;
             }
 
@@ -41,7 +42,6 @@ trait IsLockable
         });
     }
 
-
     public function lockable()
     {
         return $this->morphOne(ModelLock::class, 'lockable');
@@ -49,10 +49,11 @@ trait IsLockable
 
     public function isLocked()
     {
-        if (!empty($this->lockable) > 0 && $this->lockable->expires_at < Carbon::now()) {
+        if (! empty($this->lockable) > 0 && $this->lockable->expires_at < Carbon::now()) {
             $this->lockable->delete();
+
             return false;
-        } elseif (!empty($this->lockable) > 0 && $this->lockable->user_id != Auth::id()) {
+        } elseif (! empty($this->lockable) > 0 && $this->lockable->user_id != Auth::id()) {
             return true;
         } else {
             return false;
@@ -68,13 +69,22 @@ trait IsLockable
     {
         // set the flag to make sure that locks can be acquired
         $this->acquiringLock = true;
+<<<<<<< HEAD
         if (!$this->isLocked()) {
+=======
+        if (! $this->isLocked()) {
+>>>>>>> 89fbf90b47162826e6bad452b3414182187ba5f4
             $lock = $this->lockable()->firstOrNew();
             $lock->user_id = Auth::id();
             $lock->expires_at = Carbon::now()->addSeconds(config('lockable.duration', '3600'));
             $lock->save();
+
             return true;
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 89fbf90b47162826e6bad452b3414182187ba5f4
         return false;
     }
 
