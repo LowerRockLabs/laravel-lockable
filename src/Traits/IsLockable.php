@@ -98,6 +98,7 @@ trait IsLockable
         // set the flag to make sure that locks can be released
         $this->acquiringLock = true;
         $lockables = $this->lockable->first()->delete();
+
         return true;
     }
 }
