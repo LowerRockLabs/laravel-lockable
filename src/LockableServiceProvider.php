@@ -70,7 +70,7 @@ class LockableServiceProvider extends PackageServiceProvider
     {
         // Register the main class to use with the facade
         $this->app->singleton('lockable', function () {
-            return new Lockable();
+            return new ModelLock();
         });
 
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'lockable');

@@ -16,8 +16,6 @@ class ModelLock extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
-        'expires_at',
     ];
 
     /**

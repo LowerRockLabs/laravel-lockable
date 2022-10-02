@@ -11,6 +11,6 @@ class Lockable extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \LowerRockLabs\Lockable\Lockable::class;
+        return 'lockable';
     }
 }

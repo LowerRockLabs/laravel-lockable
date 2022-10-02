@@ -10,11 +10,11 @@ class CreateModelLocksTable extends Migration
     {
         Schema::create('model_locks', function (Blueprint $table) {
             $table->id();
-            $table->morphs('lockable');
+            $table->uuidMorphs('lockable');
             $table->uuid('user_id')->index();
-            $table->unique(['lockable_id', 'lockable_type'], 'lockable_unique');
             $table->timestamp('expires_at');
             $table->timestamps();
+            $table->unique(['lockable_id', 'lockable_type'], 'lockable_unique');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
