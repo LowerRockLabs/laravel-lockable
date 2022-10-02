@@ -33,6 +33,12 @@ trait IsLockable
             // stop the update
             return false;
         });
+
+        static::updated(function (Model $model) {
+            return static::withoutEvents(function () use ($model) {
+                $model->lockable()->delete();
+            });
+        });
     }
 
 
@@ -62,8 +68,7 @@ trait IsLockable
     {
         // set the flag to make sure that locks can be acquired
         $this->acquiringLock = true;
-        if (!$this->isLocked())
-        {
+        if (!$this->isLocked()) {
             $lock = $this->lockable()->firstOrNew();
             $lock->user_id = Auth::id();
             $lock->expires_at = Carbon::now()->addSeconds(config('lockable.duration', '3600'));
@@ -71,7 +76,6 @@ trait IsLockable
             return true;
         }
         return false;
-
     }
 
     /**
@@ -83,7 +87,7 @@ trait IsLockable
     {
         // set the flag to make sure that locks can be released
         $this->acquiringLock = true;
-        $this->lockable->delete(); // locked_by = null;
+        $this->lockable()->delete(); // locked_by = null;
 
         return true;
     }
