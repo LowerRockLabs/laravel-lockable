@@ -53,15 +53,37 @@ In the Model(s) that you wish to be lockable, add the IsLockable Trait
 use LowerRockLabs\Lockable\Traits\IsLockable;
 ```
 
-and 
+and then set the Trait
 
 ```php
 use IsLockable;
 ```
 
-You can override the Lock Duration (in seconds) on a per-model basis by setting the following in your Model, for example
+You can override the default Lock Duration (in seconds) from the configuration on a per-model basis by setting the following in your Model, for example
 ```php
 public $modelLockDuration = "600";
+```
+
+Then use the acquireLock function to attempt to acquire a lock on the model, it will return false if there is an existing lock.
+```php
+acquireLock()
+```
+
+You can override the existing lock by calling
+```php
+releaseLock()
+```
+
+Locks will clear when the Duration has expired, and an attempt is made to access the Model.
+
+**Events**
+Two Events will be fired during the Lock process, that can be used to fire Notifications or Logs if desired
+```php
+LowerRockLabs\Lockable\Events\ModelWasLocked;
+```
+and
+```php
+LowerRockLabs\Lockable\Events\ModelWasUnLocked;
 ```
 
 ## Testing
