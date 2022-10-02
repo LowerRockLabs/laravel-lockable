@@ -11,7 +11,6 @@ use LowerRockLabs\Lockable\Models\ModelLock;
 trait IsLockable
 {
     private $acquiringLock = false;
-
     public $modelLockable = true;
     public $lockDuration;
 
@@ -73,15 +72,12 @@ trait IsLockable
         if (! $this->isLocked()) {
             $lock = $this->lockable()->firstOrNew();
             $lock->user_id = Auth::id();
-            if (isset($this->lockDuration) && is_int($this->lockDuration))
-            {
+            if (isset($this->lockDuration) && is_int($this->lockDuration)) {
                 $duration = $this->lockDuration;
+            } else {
+                $duration = config('lockable.duration', '3600');
             }
-            else
-            {
-                $duration = config('lockable.duration', '3600')
-            }
-            $lock->expires_at = Carbon::now()->addSeconds($duration);
+            $lock->expires_at = Carbon::now()->addSeconds();
             $lock->save();
 
             return true;
