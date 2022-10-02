@@ -6,8 +6,9 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use LowerRockLabs\Lockable\Models\ModelLock;
 
-trait Lockable
+trait LockableModel
 {
     private $acquiringLock = false;
 
