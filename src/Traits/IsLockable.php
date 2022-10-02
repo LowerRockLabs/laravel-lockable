@@ -52,6 +52,7 @@ trait IsLockable
         if (! empty($this->lockable) > 0 && $this->lockable->expires_at < Carbon::now()) {
             return static::withoutEvents(function () use ($this) {
                 $this->lockable()->delete();
+
                 return false;
             });
         } elseif (! empty($this->lockable) > 0 && $this->lockable->user_id != Auth::id()) {
@@ -70,7 +71,7 @@ trait IsLockable
     {
         // set the flag to make sure that locks can be acquired
         $this->acquiringLock = true;
-        if (!$this->isLocked()) {
+        if (! $this->isLocked()) {
             $lock = $this->lockable()->firstOrNew();
             $lock->user_id = Auth::id();
             $lock->expires_at = Carbon::now()->addSeconds(config('lockable.duration', '3600'));
