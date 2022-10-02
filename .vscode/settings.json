@@ -1,0 +1,5 @@
+{
+    "git.autofetch": true,
+    "editor.unusualLineTerminators": "auto",
+    "files.eol": "\n"
+}
