@@ -41,6 +41,11 @@ trait Lockable
         });
     }
 
+    public function lockable()
+    {
+        return $this->morphTo(ModelLock::class, 'lockable');
+    }
+
     public function isLocked()
     {
         if ($this->lockable()->expires_at < Carbon::now())
