@@ -50,9 +50,10 @@ trait IsLockable
     public function isLocked()
     {
         if (! empty($this->lockable) > 0 && $this->lockable->expires_at < Carbon::now()) {
-            $this->lockable->delete();
-
-            return false;
+            return static::withoutEvents(function () use ($this) {
+                $this->lockable()->delete();
+                return false;
+            });
         } elseif (! empty($this->lockable) > 0 && $this->lockable->user_id != Auth::id()) {
             return true;
         } else {
