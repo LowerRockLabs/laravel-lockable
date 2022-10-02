@@ -36,11 +36,9 @@ trait IsLockable
         });
 
         static::updated(function (Model $model) {
-            return static::withoutEvents(function () use ($model) {
-                if ($model->lockable->user_id == Auth::id()) {
-                    $model->lockable()->delete();
-                }
-            });
+            if ($model->lockable->user_id == Auth::id()) {
+                $lockables = $model->lockable->first()->delete();
+            }
         });
     }
 
@@ -51,13 +49,10 @@ trait IsLockable
 
     public function isLocked()
     {
-        if (! empty($this->lockable) && Carbon::now()->gte($this->lockable->expires_at)) {
-            return static::withoutEvents(function () {
-                $this->lockable()->delete();
-
-                return false;
-            });
-        } elseif (! empty($this->lockable) && $this->lockable->user_id != Auth::id()) {
+        if (!empty($this->lockable) && Carbon::now()->gte($this->lockable->expires_at)) {
+            $this->releaseLock();
+            return false;
+        } elseif (!empty($this->lockable) && $this->lockable->user_id != Auth::id()) {
             return true;
         } else {
             return false;
@@ -94,11 +89,6 @@ trait IsLockable
     {
         // set the flag to make sure that locks can be released
         $this->acquiringLock = true;
-
-        return static::withoutEvents(function () {
-            $this->lockable()->delete();
-
-            return true;
-        });
+        $lockables = $this->lockable->first()->delete();
     }
 }
