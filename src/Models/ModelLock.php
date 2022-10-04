@@ -36,7 +36,6 @@ class ModelLock extends Model
     public function __construct()
     {
         $this->table = config('laravel-lockable.locks_table');
-
     }
 
     /**
