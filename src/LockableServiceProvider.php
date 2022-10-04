@@ -5,6 +5,8 @@ namespace LowerRockLabs\Lockable;
 use LowerRockLabs\Lockable\Commands\LockableCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use LowerRockLabs\Lockable\Commands\FlushAll;
+use LowerRockLabs\Lockable\Commands\FlushExpired;
 
 class LockableServiceProvider extends PackageServiceProvider
 {
@@ -46,6 +48,10 @@ class LockableServiceProvider extends PackageServiceProvider
                 __DIR__.'/../config/config.php' => config_path('lockable.php'),
             ], 'config');
 
+            $this->commands([
+                FlushAll::class,
+                FlushExpired::class,
+            ]);
             // Publishing the views.
             /*$this->publishes([
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/lockable'),
