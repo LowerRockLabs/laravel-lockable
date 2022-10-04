@@ -13,6 +13,7 @@ class LockableTest extends TestCase
     use WithFaker;
 
     private $user;
+
     private $otherUser;
 
     public function setUp(): void

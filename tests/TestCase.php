@@ -12,7 +12,7 @@ class TestCase extends BaseTestCase
         parent::setUp();
 
         // load the migrations that are used for testing only
-        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
 
         // load default laravel migrations?
         $this->loadLaravelMigrations();
