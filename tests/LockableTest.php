@@ -2,15 +2,14 @@
 
 namespace LowerRockLabs\Lockable\Tests;
 
-use LowerRockLabs\Lockable\Tests\Models\Note;
-use LowerRockLabs\Lockable\Tests\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
+use LowerRockLabs\Lockable\Tests\Models\Note;
+use LowerRockLabs\Lockable\Tests\Models\User;
 
 class LockableTest extends TestCase
 {
-
     public function migrationsCanContainLocksTable()
     {
         // when lockable is created on a migration

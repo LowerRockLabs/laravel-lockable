@@ -1,8 +1,8 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-use LowerRockLabs\Lockable\Tests\Models\Note;
 use Faker\Generator as Faker;
+use LowerRockLabs\Lockable\Tests\Models\Note;
 
 /*
 |--------------------------------------------------------------------------

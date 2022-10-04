@@ -1,9 +1,9 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-use LowerRockLabs\Lockable\Tests\Models\User;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
+use LowerRockLabs\Lockable\Tests\Models\User;
 
 /*
 |--------------------------------------------------------------------------

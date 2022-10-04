@@ -2,8 +2,8 @@
 
 namespace LowerRockLabs\Lockable\Tests\Models;
 
-use LowerRockLabs\Lockable\Traits\IsLockable;
 use Illuminate\Database\Eloquent\Model;
+use LowerRockLabs\Lockable\Traits\IsLockable;
 
 class Note extends Model
 {
@@ -16,6 +16,6 @@ class Note extends Model
      */
     protected $fillable = [
         'title',
-        'body'
+        'body',
     ];
 }
