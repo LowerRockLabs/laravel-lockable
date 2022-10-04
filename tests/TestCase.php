@@ -2,29 +2,35 @@
 
 namespace LowerRockLabs\Lockable\Tests;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use LowerRockLabs\Lockable\LockableServiceProvider;
-use Orchestra\Testbench\TestCase as BaseTestCase;
+use Orchestra\Testbench\TestCase as Orchestra;
 
-class TestCase extends BaseTestCase
+class TestCase extends Orchestra
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        // load the migrations that are used for testing only
-        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
-
-        // load default laravel migrations?
-        $this->loadLaravelMigrations();
+        Factory::guessFactoryNamesUsing(
+            fn (string $modelName) => 'LowerRockLabs\\Lockable\\Database\\Factories\\'.class_basename($modelName).'Factory'
+        );
     }
 
     protected function getPackageProviders($app)
     {
-        return [LockableServiceProvider::class];
+        return [
+            LockableServiceProvider::class,
+        ];
     }
 
-    protected function getEnvironmentSetUp($app)
+    public function getEnvironmentSetUp($app)
     {
-        $app['config']->set('app.key', 'base64:r0w0xC+mYYqjbZhHZ3uk1oH63VadA3RKrMW52OlIDzI=');
+        config()->set('database.default', 'testing');
+
+        /*
+        $migration = include __DIR__.'/../database/migrations/create_laravel-lockable_table.php.stub';
+        $migration->up();
+        */
     }
 }
