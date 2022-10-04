@@ -76,12 +76,14 @@ releaseLock()
 
 Locks will clear when the Duration has expired, and an attempt is made to access the Model, or you can call the commands below:
 
-### To Flush Expired Locks
+#### Commands
+
+**To Flush Expired Locks**
 ```php 
 php artisan locks:flushexpired
 ```
 
-### To Flush All Locks
+**To Flush All Locks**
 ```php 
 php artisan locks:flushall
 ```
