@@ -2,35 +2,66 @@
 
 namespace LowerRockLabs\Lockable\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
+use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use LowerRockLabs\Lockable\LockableServiceProvider;
-use Orchestra\Testbench\TestCase as Orchestra;
 
-class TestCase extends Orchestra
+class TestCase extends OrchestraTestCase
 {
+    /**
+     * Setup the test environment
+     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'LowerRockLabs\\Lockable\\Database\\Factories\\'.class_basename($modelName).'Factory'
-        );
+        // load the migrations that are used for testing only
+        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
+
+        // load default laravel migrations?
+        // $this->loadLaravelMigrations();
+
+        // load the model factories
+        $this->withFactories(__DIR__ . '/database/factories');
     }
 
+    /**
+     * Define the service providers
+     *
+     * @param \Illuminate\Foundation\Application $app
+     * @return array
+     */
     protected function getPackageProviders($app)
     {
-        return [
-            LockableServiceProvider::class,
-        ];
+        return [LockableServiceProvider::class];
     }
 
-    public function getEnvironmentSetUp($app)
+    /**
+     * Define the facades
+     *
+     * @param \Illuminate\Foundation\Application $app
+     * @return array
+     */
+    /*protected function getPackageAliases($app)
     {
-        config()->set('database.default', 'testing');
+        return [
+            'Lockable' => Lockable::class
+        ];
+    }*/
 
-        /*
-        $migration = include __DIR__.'/../database/migrations/create_laravel-lockable_table.php.stub';
-        $migration->up();
-        */
+    /**
+     * Define environment setup
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return void
+     */
+    protected function getEnvironmentSetUp($app)
+    {
+        // Setup default database to use sqlite :memory:
+        $app['config']->set('database.default', 'testbench');
+        $app['config']->set('database.connections.testbench', [
+            'driver'   => 'sqlite',
+            'database' => ':memory:',
+            'prefix'   => '',
+        ]);
     }
 }
