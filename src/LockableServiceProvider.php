@@ -40,12 +40,12 @@ class LockableServiceProvider extends PackageServiceProvider
                 $timestamp = date('Y_m_d_His');
 
                 $this->publishes([
-                    __DIR__.'/../database/migrations/create_model_locks_table.php' => database_path("/migrations/{$timestamp}_create_model_locks_table.php"),
+                    __DIR__ . '/../database/migrations/create_model_locks_table.php' => database_path("/migrations/{$timestamp}_create_model_locks_table.php"),
                 ], 'migrations');
             }
 
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('lockable.php'),
+                __DIR__ . '/../config/config.php' => config_path('laravel-lockable.php'),
             ], 'config');
 
             $this->commands([
@@ -79,6 +79,6 @@ class LockableServiceProvider extends PackageServiceProvider
             return new ModelLock();
         });
 
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'lockable');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'laravel-lockable');
     }
 }
