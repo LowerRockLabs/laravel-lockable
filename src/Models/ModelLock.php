@@ -33,6 +33,12 @@ class ModelLock extends Model
         'deleted' => ModelWasUnLocked::class,
     ];
 
+    public function __construct()
+    {
+        $this->table = config('laravel-lockable.locks_table');
+
+    }
+
     /**
      * Watchable model relation.
      *
