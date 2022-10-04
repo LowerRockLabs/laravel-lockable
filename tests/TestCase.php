@@ -2,10 +2,9 @@
 
 namespace LowerRockLabs\Lockable\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use LowerRockLabs\Lockable\Tests\Models\User;
 use LowerRockLabs\Lockable\LockableServiceProvider;
+use LowerRockLabs\Lockable\Tests\Models\User;
 
 //use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -18,7 +17,7 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
         $this->artisan('migrate', ['--database' => 'testbench']);
-        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../migrations');
     }
 
     protected function getPackageProviders($app)
