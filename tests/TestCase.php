@@ -37,7 +37,7 @@ abstract class TestCase extends BaseTestCase
             'prefix' => '',
         ]);
 
-        // Setup the right User class (using stub)
+        // Setup tfhe right User class (using stub)
         $app['config']->set('auth.providers.users.model', User::class);
         $app['config']->set('auth.providers.users', [
             'driver' => 'eloquent',
