@@ -11,14 +11,6 @@ class ModelLock extends Model
     protected $table = 'model_locks';
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-    ];
-
-    /**
      * The event map for the model.
      *
      * @var array
