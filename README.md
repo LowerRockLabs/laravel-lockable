@@ -89,12 +89,14 @@ php artisan locks:flushall
 ```
 
 
-**Events**
+#### Events
 Two Events will be fired during the Lock process, that can be used to fire Notifications or Logs if desired
+**On Model Locking**
 ```php
 LowerRockLabs\Lockable\Events\ModelWasLocked;
 ```
 and
+**On Model UnLocking**
 ```php
 LowerRockLabs\Lockable\Events\ModelWasUnLocked;
 ```
