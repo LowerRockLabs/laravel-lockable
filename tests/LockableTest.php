@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\User;
 
 it('can test', function () {
     expect(true)->toBeTrue();
