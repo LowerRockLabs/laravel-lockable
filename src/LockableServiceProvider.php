@@ -5,6 +5,7 @@ namespace LowerRockLabs\Lockable;
 use LowerRockLabs\Lockable\Commands\FlushAll;
 use LowerRockLabs\Lockable\Commands\FlushExpired;
 use LowerRockLabs\Lockable\Commands\LockableCommand;
+use LowerRockLabs\Lockable\Models\ModelLock;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
