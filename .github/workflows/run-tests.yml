@@ -45,11 +45,6 @@ jobs:
 
       - name: List Installed Dependencies
         run: composer show -D
-        
-      - name: PHPStan Check
-        uses: php-actions/phpstan@v3
-        with:
-          path: src/
 
       - name: Execute tests
         run: vendor/bin/pest
