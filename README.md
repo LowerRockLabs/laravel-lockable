@@ -74,7 +74,18 @@ You can override the existing lock by calling
 releaseLock()
 ```
 
-Locks will clear when the Duration has expired, and an attempt is made to access the Model.
+Locks will clear when the Duration has expired, and an attempt is made to access the Model, or you can call the commands below:
+
+### To Flush Expired Locks
+```php 
+php artisan locks:flushexpired
+```
+
+### To Flush All Locks
+```php 
+php artisan locks:flushall
+```
+
 
 **Events**
 Two Events will be fired during the Lock process, that can be used to fire Notifications or Logs if desired
