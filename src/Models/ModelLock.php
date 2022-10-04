@@ -53,10 +53,8 @@ class ModelLock extends Model
         return $this->belongsTo(config('auth.providers.users.model'));
     }
 
-
     public function scopeExpired($query)
     {
         return $query->where('expires_at', '<', now());
     }
-
 }

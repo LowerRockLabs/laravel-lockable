@@ -14,12 +14,12 @@ class FlushExpired extends Command
     public function handle(): int
     {
         $locksToBeUnlocked = ModelLock::expired()->get();
-        foreach ($locksToBeUnlocked as $lockToBeUnlocked)
-        {
+        foreach ($locksToBeUnlocked as $lockToBeUnlocked) {
             $lockToBeUnlocked->delete();
         }
 
         $this->comment('All done');
+
         return self::SUCCESS;
     }
 }

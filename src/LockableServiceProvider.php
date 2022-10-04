@@ -2,11 +2,11 @@
 
 namespace LowerRockLabs\Lockable;
 
+use LowerRockLabs\Lockable\Commands\FlushAll;
+use LowerRockLabs\Lockable\Commands\FlushExpired;
 use LowerRockLabs\Lockable\Commands\LockableCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use LowerRockLabs\Lockable\Commands\FlushAll;
-use LowerRockLabs\Lockable\Commands\FlushExpired;
 
 class LockableServiceProvider extends PackageServiceProvider
 {
