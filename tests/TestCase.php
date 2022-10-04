@@ -50,7 +50,7 @@ abstract class TestCase extends BaseTestCase
 
         /*
         $migration = include __DIR__.'/../database/migrations/create_laravel-lockable_table.php.stub';
-        $migration->up();
+        $migration->up();s
         */
     }
 }
