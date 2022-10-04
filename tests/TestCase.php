@@ -11,7 +11,7 @@ class TestCase extends Orchestra
     protected function setUp(): void
     {
         parent::setUp();
-
+        // Set Factories
         Factory::guessFactoryNamesUsing(
             fn (string $modelName) => 'LowerRockLabs\\Lockable\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
