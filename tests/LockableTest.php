@@ -4,7 +4,6 @@ namespace LowerRockLabs\Lockable\Tests;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
 use LowerRockLabs\Lockable\Tests\Models\Note;
@@ -12,11 +11,6 @@ use LowerRockLabs\Lockable\Tests\Models\User;
 use LowerRockLabs\Lockable\Events\ModelWasLocked;
 use LowerRockLabs\Lockable\Events\ModelWasUnLocked;
 use LowerRockLabs\Lockable\Commands\FlushExpired;
-=======
-use Illuminate\Support\Facades\Schema;
-use LowerRockLabs\Lockable\Tests\Models\Note;
-use LowerRockLabs\Lockable\Tests\Models\User;
->>>>>>> 27f63a297c9107c1069e14248a83913de6eb62a0
 
 class LockableTest extends TestCase
 {
@@ -97,6 +91,23 @@ class LockableTest extends TestCase
         Auth::login($user2);
 
         $this->assertTrue($note->isLocked());
+    }
+
+    /** @test */
+    public function testCanAccessModelWithoutLock()
+    {
+        $user1 = factory(User::class)->create();
+        Auth::login($user1);
+
+        $note = factory(Note::class)->create(['title' => 'Test Note No Events']);
+
+        $user2 = factory(User::class)->create();
+        Auth::login($user2);
+        $note->acquireLock();
+        $note->update(['title' => 'Test Note 9']);
+        $note->save();
+
+        $this->assertEquals('Test Note 9', $note->title);
     }
 
     /** @test */
