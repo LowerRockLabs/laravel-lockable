@@ -2,17 +2,16 @@
 
 namespace LowerRockLabs\Lockable\Tests;
 
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Orchestra\Testbench\TestCase as Orchestra;
 use LowerRockLabs\Lockable\LockableServiceProvider;
 use LowerRockLabs\Lockable\Tests\Models\User;
 
 //use Orchestra\Testbench\TestCase as Orchestra;
 
 //class TestCase extends Orchestra
-abstract class TestCase extends BaseTestCase
+abstract class TestCase extends Orchestra
 {
-    use CreatesApplication;
-
     protected function setUp(): void
     {
         parent::setUp();
