@@ -70,19 +70,16 @@ trait IsLockable
 
         // set the flag to make sure that locks can be acquired
         $this->acquiringLock = true;
-        if (! $this->isLocked()) {
-            $this->lockDuration = (isset($this->modelLockDuration) ? $this->modelLockDuration : config('lockable.duration', '3600'));
 
-            $lock = $this->lockable()->firstOrNew();
-            $lock->user_id = Auth::id();
+        $this->lockDuration = (isset($this->modelLockDuration) ? $this->modelLockDuration : config('lockable.duration', '3600'));
 
-            $lock->expires_at = Carbon::now()->addSeconds($this->lockDuration);
-            $lock->save();
+        $lock = $this->lockable()->firstOrNew();
+        $lock->user_id = Auth::id();
 
-            return true;
-        }
+        $lock->expires_at = Carbon::now()->addSeconds($this->lockDuration);
+        $lock->save();
 
-        return false;
+        return true;
     }
 
     /**
