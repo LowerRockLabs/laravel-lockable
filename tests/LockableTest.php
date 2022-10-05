@@ -2,13 +2,11 @@
 
 namespace LowerRockLabs\Lockable\Tests;
 
-//use LowerRockLabs\Lockable\Tests\Models\Article;
-use LowerRockLabs\Lockable\Tests\Models\User;
-use LowerRockLabs\Lockable\Tests\Models\Note;
-use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
+use LowerRockLabs\Lockable\Tests\Models\User;
+use LowerRockLabs\Lockable\Tests\Models\Note;
 
 class LockableTest extends TestCase
 {

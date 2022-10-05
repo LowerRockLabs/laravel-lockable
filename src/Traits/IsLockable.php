@@ -69,7 +69,6 @@ trait IsLockable
      */
     public function acquireLock()
     {
-
         // set the flag to make sure that locks can be acquired
 
         if (!$this->acquiringLock) {
@@ -93,6 +92,7 @@ trait IsLockable
     public function releaseLock()
     {
         // set the flag to make sure that locks can be released
+
         if (!$this->acquiringLock) {
             $this->acquiringLock = true;
         }

@@ -2,11 +2,9 @@
 
 namespace LowerRockLabs\Lockable\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use LowerRockLabs\Lockable\LockableServiceProvider;
 use LowerRockLabs\Lockable\Tests\Models\User;
-use LowerRockLabs\Lockable\Tests\Models\Note;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra

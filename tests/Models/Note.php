@@ -9,6 +9,7 @@ class Note extends Model
 {
     use IsLockable;
 
+
     public $modelLockDuration = "3600";
 
     /**
