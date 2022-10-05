@@ -30,7 +30,6 @@ abstract class TestCase extends Orchestra
         $this->beforeApplicationDestroyed(function () {
             $this->artisan('migrate:rollback', ['--database' => 'testbench'])->run();
         });
-
     }
 
 
@@ -59,21 +58,21 @@ abstract class TestCase extends Orchestra
     protected function defineEnvironment($app)
     {
 
-            // Setup default database to use sqlite :memory:
-            $app['config']->set('database.default', 'testbench');
-            $app['config']->set('database.connections.testbench', [
+        // Setup default database to use sqlite :memory:
+        $app['config']->set('database.default', 'testbench');
+        $app['config']->set('database.connections.testbench', [
                 'driver'   => 'sqlite',
                 'database' => ':memory:',
                 'prefix'   => '',
             ]);
 
-            // Setup tfhe right User class (using stub)
-            $app['config']->set('auth.providers.users.model', User::class);
-            $app['config']->set('auth.providers.users', [
+        // Setup tfhe right User class (using stub)
+        $app['config']->set('auth.providers.users.model', User::class);
+        $app['config']->set('auth.providers.users', [
                 'driver' => 'eloquent',
                 'model' => User::class,
             ]);
-            $app['config']->set('auth.guards.users', [
+        $app['config']->set('auth.guards.users', [
                 'driver' => 'session',
                 'provider' => 'admins',
             ]);
