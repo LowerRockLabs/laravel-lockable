@@ -15,9 +15,8 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        $this->withFactories(__DIR__ . '/database/factories');
+        $this->withFactories(__DIR__.'/database/factories');
     }
-
 
     /**
      * Define database migrations.
@@ -26,7 +25,7 @@ class TestCase extends Orchestra
      */
     protected function defineDatabaseMigrations()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
         $this->artisan('migrate', ['--database' => 'testbench'])->run();
 
         $this->loadLaravelMigrations(['--database' => 'testbench']);
@@ -37,8 +36,7 @@ class TestCase extends Orchestra
     }
 
     /**
-     * @param mixed $app
-     *
+     * @param  mixed  $app
      * @return array
      */
     protected function getPackageProviders($app)
@@ -66,25 +64,24 @@ class TestCase extends Orchestra
      */
     protected function defineEnvironment($app)
     {
-
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
-                'driver'   => 'sqlite',
-                'database' => ':memory:',
-                'prefix'   => '',
-            ]);
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+        ]);
 
         // Setup tfhe right User class (using stub)
         $app['config']->set('auth.providers.users.model', User::class);
         $app['config']->set('auth.providers.users', [
-                'driver' => 'eloquent',
-                'model' => User::class,
-            ]);
+            'driver' => 'eloquent',
+            'model' => User::class,
+        ]);
         $app['config']->set('auth.guards.users', [
-                'driver' => 'session',
-                'provider' => 'admins',
-            ]);
+            'driver' => 'session',
+            'provider' => 'admins',
+        ]);
     }
 
     public function getEnvironmentSetUp($app)

@@ -4,6 +4,7 @@ namespace LowerRockLabs\Lockable\Tests;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
 use LowerRockLabs\Lockable\Tests\Models\Note;
@@ -11,6 +12,11 @@ use LowerRockLabs\Lockable\Tests\Models\User;
 use LowerRockLabs\Lockable\Events\ModelWasLocked;
 use LowerRockLabs\Lockable\Events\ModelWasUnLocked;
 use LowerRockLabs\Lockable\Commands\FlushExpired;
+=======
+use Illuminate\Support\Facades\Schema;
+use LowerRockLabs\Lockable\Tests\Models\Note;
+use LowerRockLabs\Lockable\Tests\Models\User;
+>>>>>>> 27f63a297c9107c1069e14248a83913de6eb62a0
 
 class LockableTest extends TestCase
 {
