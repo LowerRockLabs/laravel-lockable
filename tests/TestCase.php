@@ -7,14 +7,12 @@ use Orchestra\Testbench\TestCase as Orchestra;
 use LowerRockLabs\Lockable\LockableServiceProvider;
 use LowerRockLabs\Lockable\Tests\Models\User;
 
-//use Orchestra\Testbench\TestCase as Orchestra;
-
-//class TestCase extends Orchestra
 abstract class TestCase extends Orchestra
 {
     protected function setUp(): void
     {
         parent::setUp();
+        $this->withFactories(__DIR__ . '/database/factories');
     }
 
 
@@ -25,9 +23,14 @@ abstract class TestCase extends Orchestra
  */
     protected function defineDatabaseMigrations()
     {
-        $this->artisan('migrate', ['--database' => 'testbench'])->run();
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->loadLaravelMigrations(['--database' => 'testbench']);
+        $this->artisan('migrate', ['--database' => 'testbench'])->run();
+
+        $this->beforeApplicationDestroyed(function () {
+            $this->artisan('migrate:rollback', ['--database' => 'testbench'])->run();
+        });
+
     }
 
 
@@ -55,13 +58,14 @@ abstract class TestCase extends Orchestra
      */
     protected function defineEnvironment($app)
     {
-        // Setup default database to use sqlite :memory:
-        $app['config']->set('database.default', 'testbench');
-        $app['config']->set('database.connections.testbench', [
-        'driver'   => 'sqlite',
-        'database' => ':memory:',
-        'prefix'   => '',
-    ]);
+
+            // Setup default database to use sqlite :memory:
+            $app['config']->set('database.default', 'testbench');
+            $app['config']->set('database.connections.testbench', [
+                'driver'   => 'sqlite',
+                'database' => ':memory:',
+                'prefix'   => '',
+            ]);
 
             // Setup tfhe right User class (using stub)
             $app['config']->set('auth.providers.users.model', User::class);
@@ -77,10 +81,6 @@ abstract class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app)
     {
-        config()->set('database.default', 'testing');
-
-
-
         /*
         $migration = include __DIR__.'/../database/migrations/create_laravel-lockable_table.php.stub';
         $migration->up();sff
