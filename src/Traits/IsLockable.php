@@ -63,7 +63,6 @@ trait IsLockable
     /**
      * Acquire the lock for this model
      *
-     * @return bool
      */
     public function acquireLock(): bool
     {
@@ -79,13 +78,11 @@ trait IsLockable
         $lock->expires_at = Carbon::now()->addSeconds($this->lockDuration);
         $lock->save();
 
-        return true;
     }
 
     /**
      * Release the lock for this model
      *
-     * @return bool
      */
     public function releaseLock(): bool
     {
@@ -93,6 +90,5 @@ trait IsLockable
         $this->acquiringLock = true;
         $lockables = $this->lockable->first()->delete();
 
-        return true;
     }
 }
