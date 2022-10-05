@@ -31,8 +31,6 @@ class LockableTest extends TestCase
         $this->assertEquals('Test User 1', $user->name);
     }
 
-
-
     /** @test */
     public function canCreateANoteAndObtainLock()
     {
@@ -51,12 +49,56 @@ class LockableTest extends TestCase
         $note->update(['title' => 'Test Note 1']);
         $note->save();
 
-
         $this->assertEquals('Test Note 1', $note->title);
     }
 
     /** @test */
-    public function cannotUpdateALockedModel()
+    public function testNotLockedForSameUser()
+    {
+        $user1 = factory(User::class)->create();
+        Auth::login($user1);
+
+        $note = factory(Note::class)->create();
+        $note->acquireLock();
+
+        $this->assertFalse($note->isLocked());
+    }
+
+    /** @test */
+    public function testIsLockedForAnotherUser()
+    {
+        $user1 = factory(User::class)->create();
+        Auth::login($user1);
+
+        $note = factory(Note::class)->create();
+        $note->acquireLock();
+
+        $user2 = factory(User::class)->create();
+        Auth::login($user2);
+
+        $this->assertTrue($note->isLocked());
+    }
+
+    /** @test */
+    public function testLockRemovalAfterExpiryAllowsAccess()
+    {
+        $user1 = factory(User::class)->create();
+        Auth::login($user1);
+
+        $note = factory(Note::class)->create();
+        $lock = $note->lockable()->firstOrNew();
+        $lock->user_id = Auth::id();
+        $lock->expires_at = Carbon::now()->subSeconds('3600');
+        $lock->save();
+
+        $user2 = factory(User::class)->create();
+        Auth::login($user2);
+
+        $this->assertFalse($note->isLocked());
+    }
+
+    /** @test */
+    public function testLockedModelReturnsFalseWhenUpdating()
     {
         $this->expectExceptionMessage('User does not hold the lock to this model.');
         $user3 = factory(User::class)->create();
@@ -65,16 +107,10 @@ class LockableTest extends TestCase
         Auth::login($user3);
 
         $note = factory(Note::class)->create();
-
-        $lock = $note->lockable()->firstOrNew();
-        $lock->user_id = Auth::id();
-        $lock->expires_at = Carbon::now()->addSeconds('3600');
-        $lock->save();
+        $note->acquireLock();
 
         $note->update(['title' => 'Test Note 1']);
         $note->save();
-
-
 
         $user4 = factory(User::class)->create();
         $user4->update(['name' => 'Test User 3']);
@@ -83,5 +119,17 @@ class LockableTest extends TestCase
         Auth::login($user4);
         $note->update(['title' => 'Test Note 4']);
         $note->save();
+    }
+
+    /** @test */
+    public function testLockDurationIsConfigurablePerModel()
+    {
+        $user1 = factory(User::class)->create();
+        Auth::login($user1);
+
+        $note = factory(Note::class)->create();
+        $note->modelLockDuration = "8000";
+        $note->acquireLock();
+        $this->assertTrue(Carbon::now()->addSeconds('4000')->lte($note->lockable->expires_at));
     }
 }

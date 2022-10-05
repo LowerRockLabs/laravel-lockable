@@ -9,6 +9,8 @@ class Note extends Model
 {
     use IsLockable;
 
+    public $modelLockDuration = "3600";
+
     /**
      * The attributes that are mass assignable.
      *
