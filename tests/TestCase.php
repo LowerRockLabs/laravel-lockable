@@ -7,8 +7,13 @@ use Orchestra\Testbench\TestCase as Orchestra;
 use LowerRockLabs\Lockable\LockableServiceProvider;
 use LowerRockLabs\Lockable\Tests\Models\User;
 
-abstract class TestCase extends Orchestra
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+class TestCase extends Orchestra
 {
+    use RefreshDatabase;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -24,8 +29,9 @@ abstract class TestCase extends Orchestra
     protected function defineDatabaseMigrations()
     {
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
-        $this->loadLaravelMigrations(['--database' => 'testbench']);
         $this->artisan('migrate', ['--database' => 'testbench'])->run();
+
+        $this->loadLaravelMigrations(['--database' => 'testbench']);
 
         $this->beforeApplicationDestroyed(function () {
             $this->artisan('migrate:rollback', ['--database' => 'testbench'])->run();
