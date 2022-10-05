@@ -22,8 +22,7 @@ class LockableServiceProvider extends PackageServiceProvider
             ->name('laravel-lockable')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_model_locks_table')
-            ->hasCommand(LockableCommand::class);
+            ->hasMigration('create_model_locks_table');
     }
 
     public function boot()
