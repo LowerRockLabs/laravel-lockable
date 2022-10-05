@@ -21,6 +21,13 @@ class CreateModelLocksTestTable extends Migration
             $table->timestamps();
             $table->unique(['lockable_id', 'lockable_type'], 'lockable_unique');
         });
+
+        Schema::create('notes', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->text('body');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -31,5 +38,7 @@ class CreateModelLocksTestTable extends Migration
     public function down()
     {
         Schema::dropIfExists('model_locks');
+        Schema::dropIfExists('notes');
+
     }
 }
