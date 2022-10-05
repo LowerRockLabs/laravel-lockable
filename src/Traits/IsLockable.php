@@ -54,6 +54,8 @@ trait IsLockable
             return false;
         } elseif (! empty($this->lockable) && $this->lockable->user_id != Auth::id()) {
             return true;
+        } elseif (! empty($this->lockable) && $this->lockable->user_id == Auth::id()) {
+            return false;
         } else {
             $this->acquireLock();
             return false;
@@ -77,7 +79,6 @@ trait IsLockable
 
         $lock->expires_at = Carbon::now()->addSeconds($this->lockDuration);
         $lock->save();
-
     }
 
     /**
@@ -89,6 +90,5 @@ trait IsLockable
         // set the flag to make sure that locks can be released
         $this->acquiringLock = true;
         $lockables = $this->lockable->first()->delete();
-
     }
 }
