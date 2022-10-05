@@ -6,13 +6,10 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
-use LowerRockLabs\Lockable\LockableServiceProvider;
-use LowerRockLabs\Lockable\Models\ModelLock;
-use LowerRockLabs\Lockable\Tests\Models\Note;
-use LowerRockLabs\Lockable\Tests\Models\User;
 use LowerRockLabs\Lockable\Events\ModelWasLocked;
 use LowerRockLabs\Lockable\Events\ModelWasUnLocked;
-use LowerRockLabs\Lockable\Commands\FlushExpired;
+use LowerRockLabs\Lockable\Tests\Models\Note;
+use LowerRockLabs\Lockable\Tests\Models\User;
 
 class LockableTest extends TestCase
 {
@@ -166,7 +163,6 @@ class LockableTest extends TestCase
         $this->assertTrue(Carbon::now()->addSeconds('4000')->lte($note->lockable->expires_at));
     }
 
-
     /** @test */
     public function testEventModelWasLocked()
     {
@@ -179,7 +175,6 @@ class LockableTest extends TestCase
         $note->acquireLock();
         Event::assertDispatched(ModelWasLocked::class);
     }
-
 
     /** @test */
     public function testEventModelWasUnLocked()
@@ -200,7 +195,6 @@ class LockableTest extends TestCase
     {
         $this->artisan('locks:flushexpired')->assertExitCode(0);
     }
-
 
     /** @test */
     public function testFlushAllLocks()
