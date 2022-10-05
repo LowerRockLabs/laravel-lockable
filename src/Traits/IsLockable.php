@@ -51,6 +51,7 @@ trait IsLockable
         if (! empty($this->lockable) && Carbon::now()->gte($this->lockable->expires_at)) {
             $this->releaseLock();
             $this->acquireLock();
+
             return false;
         } elseif (! empty($this->lockable) && $this->lockable->user_id != Auth::id()) {
             return true;
@@ -58,25 +59,26 @@ trait IsLockable
             return false;
         } else {
             $this->acquireLock();
+
             return false;
         }
     }
 
     /**
      * Acquire the lock for this model
-     *
      */
     public function acquireLock()
     {
 
         // set the flag to make sure that locks can be acquired
+
         if (!$this->acquiringLock) {
             $this->acquiringLock = true;
         }
+
         if (!isset($this->lockDuration)) {
             $this->lockDuration = (isset($this->modelLockDuration) ? $this->modelLockDuration : config('lockable.duration', '3600'));
         }
-
 
         $lock = $this->lockable()->firstOrNew();
         $lock->user_id = Auth::id();
@@ -87,7 +89,6 @@ trait IsLockable
 
     /**
      * Release the lock for this model
-     *
      */
     public function releaseLock()
     {

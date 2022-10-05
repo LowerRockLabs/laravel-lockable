@@ -39,6 +39,5 @@ class CreateModelLocksTestTable extends Migration
     {
         Schema::dropIfExists('model_locks');
         Schema::dropIfExists('notes');
-
     }
 }
