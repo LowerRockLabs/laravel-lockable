@@ -64,7 +64,7 @@ trait IsLockable
      * Acquire the lock for this model
      *
      */
-    public function acquireLock(): bool
+    public function acquireLock()
     {
 
         // set the flag to make sure that locks can be acquired
@@ -84,7 +84,7 @@ trait IsLockable
      * Release the lock for this model
      *
      */
-    public function releaseLock(): bool
+    public function releaseLock()
     {
         // set the flag to make sure that locks can be released
         $this->acquiringLock = true;
