@@ -176,6 +176,7 @@ class LockableTest extends TestCase
         Event::assertDispatched(ModelWasLocked::class);
     }
 
+
     /** @test */
     public function testEventModelWasUnLocked()
     {
