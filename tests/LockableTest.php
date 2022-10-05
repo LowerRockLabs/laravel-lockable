@@ -19,6 +19,18 @@ class LockableTest extends TestCase
     }
 
     /** @test */
+    public function migrationsContainsNotesTable()
+    {
+        $this->assertTrue(Schema::hasColumn('notes', 'title'));
+    }
+
+    /** @test */
+    public function migrationsContainsUsersTable()
+    {
+        $this->assertTrue(Schema::hasColumn('users', 'name'));
+    }
+
+    /** @test */
     public function canCreateAUser()
     {
         // given a user
