@@ -6,10 +6,11 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
-use LowerRockLabs\Lockable\Events\ModelWasLocked;
-use LowerRockLabs\Lockable\Events\ModelWasUnLocked;
 use LowerRockLabs\Lockable\Tests\Models\Note;
 use LowerRockLabs\Lockable\Tests\Models\User;
+use LowerRockLabs\Lockable\Events\ModelWasLocked;
+use LowerRockLabs\Lockable\Events\ModelWasUnLocked;
+use LowerRockLabs\Lockable\Commands\FlushExpired;
 
 class LockableTest extends TestCase
 {
@@ -166,9 +167,7 @@ class LockableTest extends TestCase
     /** @test */
     public function testEventModelWasLocked()
     {
-        Event::fake([
-            ModelWasLocked::class,
-        ]);
+        Event::fake();
 
         $user1 = factory(User::class)->create();
         Auth::login($user1);
@@ -178,12 +177,11 @@ class LockableTest extends TestCase
         Event::assertDispatched(ModelWasLocked::class);
     }
 
+
     /** @test */
     public function testEventModelWasUnLocked()
     {
-        Event::fake([
-            ModelWasUnLocked::class,
-        ]);
+        Event::fake();
 
         $user1 = factory(User::class)->create();
         Auth::login($user1);
