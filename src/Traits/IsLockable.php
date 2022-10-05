@@ -66,6 +66,9 @@ trait IsLockable
      */
     public function acquireLock(): bool
     {
+        $user = Auth::user();
+        Log::emergency(get_class($user));
+
         // set the flag to make sure that locks can be acquired
         $this->acquiringLock = true;
         if (! $this->isLocked()) {
