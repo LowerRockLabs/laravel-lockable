@@ -73,7 +73,10 @@ trait IsLockable
         if (!$this->acquiringLock) {
             $this->acquiringLock = true;
         }
-        $this->lockDuration = (isset($this->modelLockDuration) ? $this->modelLockDuration : config('lockable.duration', '3600'));
+        if (!isset($this->lockDuration)) {
+            $this->lockDuration = (isset($this->modelLockDuration) ? $this->modelLockDuration : config('lockable.duration', '3600'));
+        }
+
 
         $lock = $this->lockable()->firstOrNew();
         $lock->user_id = Auth::id();
