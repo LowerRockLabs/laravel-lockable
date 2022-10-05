@@ -1,0 +1,125 @@
+# Laravel Lockable provides traits to allow for models to be locked
+
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/lowerrocklabs/laravel-lockable.svg?style=flat-square)](https://packagist.org/packages/lowerrocklabs/laravel-lockable)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/lowerrocklabs/laravel-lockable/run-tests?label=tests)](https://github.com/lowerrocklabs/laravel-lockable/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/lowerrocklabs/laravel-lockable/Fix%20PHP%20code%20style%20issues?label=code%20style)](https://github.com/lowerrocklabs/laravel-lockable/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/lowerrocklabs/laravel-lockable.svg?style=flat-square)](https://packagist.org/packages/lowerrocklabs/laravel-lockable)
+
+This model allows for on-demand locking of models.  You can integrate this with your permissions methodology of choice, or leave it stand-alone.  This package allows you to determine whether a particular instance of a model is Locked or Not.  Or it will independently prevent updating of a model instance.
+
+## Installation
+
+You can install the package via composer:
+
+```bash
+composer require lowerrocklabs/laravel-lockable
+```
+
+You can publish and run the migrations with:
+
+```bash
+php artisan vendor:publish --tag="laravel-lockable-migrations"
+php artisan migrate
+```
+
+You can publish the config file with:
+
+```bash
+php artisan vendor:publish --tag="laravel-lockable-config"
+```
+
+This is the contents of the published config file, which controls the global lock duration, this is customisable on a per-model basis (see below).
+
+```php
+return [
+ 'duration' => '3600',
+];
+```
+
+
+## Usage
+
+#### Model Configuration
+In the Model(s) that you wish to be lockable, add the IsLockable Trait
+
+```php
+use LowerRockLabs\Lockable\Traits\IsLockable;
+```
+
+and then set the Trait
+
+```php
+use IsLockable;
+```
+
+#### In Your Component/Controller
+Then use the acquireLock function to attempt to acquire a lock on the model, it will return false if there is an existing lock.
+```php
+acquireLock()
+```
+
+You can override the existing lock by calling the releaseLock() function before acquireLock(), if you are using a permissions-based approach, it is suggested that you restrict this to approriate users.
+```php
+releaseLock()
+```
+
+#### Lock Duration
+You can override the default Lock Duration (in seconds) which is taken from the configuration on a per-model basis by setting the following in your Model, for example, the following would limit the duration of a lock to 600 seconds.
+
+```php
+public $modelLockDuration = "600";
+```
+
+Locks will clear when the Duration has expired, and an attempt is made to access the Model, or you can call the commands below, or add them to a schedule (as you see fit).
+
+#### Commands
+
+**To Flush Expired Locks**
+```php 
+php artisan locks:flushexpired
+```
+
+**To Flush All Locks**
+```php 
+php artisan locks:flushall
+```
+
+
+#### Events
+Two Events will be fired during the Lock process, that can be used to fire Notifications or Logs if desired
+**On Model Locking**
+```php
+LowerRockLabs\Lockable\Events\ModelWasLocked;
+```
+and
+**On Model UnLocking**
+```php
+LowerRockLabs\Lockable\Events\ModelWasUnLocked;
+```
+
+## Testing
+
+```bash
+composer test
+```
+
+## Changelog
+
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+
+## Contributing
+
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+
+## Security Vulnerabilities
+
+Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+
+## Credits
+
+- [Joe](https://github.com/LowerRockLabs)
+- [All Contributors](../../contributors)
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

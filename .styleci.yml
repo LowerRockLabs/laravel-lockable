@@ -1,0 +1,48 @@
+php:
+  risky: true
+  version: 8.1
+  preset: laravel
+  enabled:
+    - ternary_to_elvis_operator
+  disabled:
+    - single_import_per_statement
+  finder:
+    exclude:
+      - "modules"
+      - "node_modules"
+      - "nova"
+      - "nova-components"
+      - "storage"
+      - "spark"
+      - "vendor"
+    name: "*.php"
+    not-name:
+      - "*.blade.php"
+      - "_ide_helper.php"
+js:
+  tab-width: 4
+  use-tabs: false
+  print-width: 120
+  double-quotes: false
+  trailing-commas: es5
+  semicolons: true
+  arrow-parens: always
+  bracket-same-line: false
+  bracket-spacing: true
+  finder:
+    exclude:
+      - "modules"
+      - "node_modules"
+      - "nova"
+      - "nova-components"
+      - "storage"
+      - "spark"
+      - "vendor"
+    name:
+      - "*.js"
+      - "*.jsx"
+    not-name:
+      - "*.min.js"
+ts: false
+css: false
+py: true
