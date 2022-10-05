@@ -50,50 +50,52 @@ trait IsLockable
     {
         if (! empty($this->lockable) && Carbon::now()->gte($this->lockable->expires_at)) {
             $this->releaseLock();
+            $this->acquireLock();
 
             return false;
         } elseif (! empty($this->lockable) && $this->lockable->user_id != Auth::id()) {
             return true;
+        } elseif (! empty($this->lockable) && $this->lockable->user_id == Auth::id()) {
+            return false;
         } else {
+            $this->acquireLock();
+
             return false;
         }
     }
 
     /**
      * Acquire the lock for this model
-     *
-     * @return bool
      */
-    public function acquireLock(): bool
+    public function acquireLock()
     {
         // set the flag to make sure that locks can be acquired
-        $this->acquiringLock = true;
-        if (! $this->isLocked()) {
-            $this->lockDuration = (isset($this->modelLockDuration) ? $this->modelLockDuration : config('lockable.duration', '3600'));
 
-            $lock = $this->lockable()->firstOrNew();
-            $lock->user_id = Auth::id();
-
-            $lock->expires_at = Carbon::now()->addSeconds($this->lockDuration);
-            $lock->save();
-
-            return true;
+        if (! $this->acquiringLock) {
+            $this->acquiringLock = true;
         }
 
-        return false;
+        if (! isset($this->lockDuration)) {
+            $this->lockDuration = (isset($this->modelLockDuration) ? $this->modelLockDuration : config('lockable.duration', '3600'));
+        }
+
+        $lock = $this->lockable()->firstOrNew();
+        $lock->user_id = Auth::id();
+
+        $lock->expires_at = Carbon::now()->addSeconds($this->lockDuration);
+        $lock->save();
     }
 
     /**
      * Release the lock for this model
-     *
-     * @return bool
      */
-    public function releaseLock(): bool
+    public function releaseLock()
     {
         // set the flag to make sure that locks can be released
-        $this->acquiringLock = true;
-        $lockables = $this->lockable->first()->delete();
 
-        return true;
+        if (! $this->acquiringLock) {
+            $this->acquiringLock = true;
+        }
+        $lockables = $this->lockable->first()->delete();
     }
 }

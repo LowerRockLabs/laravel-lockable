@@ -2,24 +2,43 @@
 
 namespace LowerRockLabs\Lockable\Tests;
 
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use LowerRockLabs\Lockable\LockableServiceProvider;
 use LowerRockLabs\Lockable\Tests\Models\User;
+use Orchestra\Testbench\TestCase as Orchestra;
 
-//use Orchestra\Testbench\TestCase as Orchestra;
-
-//class TestCase extends Orchestra
-abstract class TestCase extends BaseTestCase
+class TestCase extends Orchestra
 {
-    use CreatesApplication;
+    use RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->artisan('migrate', ['--database' => 'testbench']);
-        $this->loadMigrationsFrom(__DIR__.'/../migrations');
+
+        $this->withFactories(__DIR__.'/database/factories');
     }
 
+    /**
+     * Define database migrations.
+     *
+     * @return void
+     */
+    protected function defineDatabaseMigrations()
+    {
+        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+        $this->artisan('migrate', ['--database' => 'testbench'])->run();
+
+        $this->loadLaravelMigrations(['--database' => 'testbench']);
+
+        $this->beforeApplicationDestroyed(function () {
+            $this->artisan('migrate:rollback', ['--database' => 'testbench'])->run();
+        });
+    }
+
+    /**
+     * @param  mixed  $app
+     * @return array
+     */
     protected function getPackageProviders($app)
     {
         return [
@@ -27,9 +46,25 @@ abstract class TestCase extends BaseTestCase
         ];
     }
 
-    public function getEnvironmentSetUp($app)
+    /**
+     * Ignore package discovery from.
+     *
+     * @return array<int, array>
+     */
+    public function ignorePackageDiscoveriesFrom()
     {
-        config()->set('database.default', 'testing');
+        return [];
+    }
+
+    /**
+     * Define environment setup.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return void
+     */
+    protected function defineEnvironment($app)
+    {
+        // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
             'driver' => 'sqlite',
@@ -47,7 +82,10 @@ abstract class TestCase extends BaseTestCase
             'driver' => 'session',
             'provider' => 'admins',
         ]);
+    }
 
+    public function getEnvironmentSetUp($app)
+    {
         /*
         $migration = include __DIR__.'/../database/migrations/create_laravel-lockable_table.php.stub';
         $migration->up();sff

@@ -22,15 +22,17 @@
         "illuminate/contracts": "^9.0"
     },
     "require-dev": {
-        "laravel/pint": "^1.0",
+        "laravel/legacy-factories": "^1.0.4",
+        "laravel/pint": "^1.2",
         "nunomaduro/collision": "^6.0",
         "nunomaduro/larastan": "^2.0.1",
-        "orchestra/testbench": "^7.0",
+        "orchestra/testbench": "^7.9",
         "pestphp/pest": "^1.21",
         "pestphp/pest-plugin-laravel": "^1.1",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
+        "phpunit/php-code-coverage": "^9.2",
         "phpunit/phpunit": "^9.5"
     },
     "autoload": {
