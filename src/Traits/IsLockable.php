@@ -71,9 +71,11 @@ trait IsLockable
     {
         // set the flag to make sure that locks can be acquired
 
+
         if (!$this->acquiringLock) {
             $this->acquiringLock = true;
         }
+
 
         if (!isset($this->lockDuration)) {
             $this->lockDuration = (isset($this->modelLockDuration) ? $this->modelLockDuration : config('lockable.duration', '3600'));
@@ -92,6 +94,7 @@ trait IsLockable
     public function releaseLock()
     {
         // set the flag to make sure that locks can be released
+
 
         if (!$this->acquiringLock) {
             $this->acquiringLock = true;
