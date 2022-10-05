@@ -70,8 +70,9 @@ trait IsLockable
     {
 
         // set the flag to make sure that locks can be acquired
-        $this->acquiringLock = true;
-
+        if (!$this->acquiringLock) {
+            $this->acquiringLock = true;
+        }
         $this->lockDuration = (isset($this->modelLockDuration) ? $this->modelLockDuration : config('lockable.duration', '3600'));
 
         $lock = $this->lockable()->firstOrNew();
@@ -88,7 +89,9 @@ trait IsLockable
     public function releaseLock()
     {
         // set the flag to make sure that locks can be released
-        $this->acquiringLock = true;
+        if (!$this->acquiringLock) {
+            $this->acquiringLock = true;
+        }
         $lockables = $this->lockable->first()->delete();
     }
 }
