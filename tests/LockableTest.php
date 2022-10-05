@@ -2,11 +2,15 @@
 
 namespace LowerRockLabs\Lockable\Tests;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
-use LowerRockLabs\Lockable\Tests\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Schema;
 use LowerRockLabs\Lockable\Tests\Models\Note;
+use LowerRockLabs\Lockable\Tests\Models\User;
+use LowerRockLabs\Lockable\Events\ModelWasLocked;
+use LowerRockLabs\Lockable\Events\ModelWasUnLocked;
+use LowerRockLabs\Lockable\Commands\FlushExpired;
 
 class LockableTest extends TestCase
 {
@@ -138,8 +142,51 @@ class LockableTest extends TestCase
         Auth::login($user1);
 
         $note = factory(Note::class)->create();
-        $note->modelLockDuration = "8000";
+        $note->modelLockDuration = '8000';
         $note->acquireLock();
         $this->assertTrue(Carbon::now()->addSeconds('4000')->lte($note->lockable->expires_at));
+    }
+
+    /** @test */
+    public function testEventModelWasLocked()
+    {
+        Event::fake([
+            ModelWasLocked::class,
+        ]);
+
+        $user1 = factory(User::class)->create();
+        Auth::login($user1);
+
+        $note = factory(Note::class)->create();
+        $note->acquireLock();
+        Event::assertDispatched(ModelWasLocked::class);
+    }
+
+    /** @test */
+    public function testEventModelWasUnLocked()
+    {
+        Event::fake([
+                ModelWasUnLocked::class,
+            ]);
+
+        $user1 = factory(User::class)->create();
+        Auth::login($user1);
+
+        $note = factory(Note::class)->create();
+        $note->acquireLock();
+        $note->releaseLock();
+        Event::assertDispatched(ModelWasUnLocked::class);
+    }
+
+    /** @test */
+    public function testFlushExpiredLocks()
+    {
+        $this->artisan('locks:flushexpired')->assertExitCode(0);
+    }
+
+    /** @test */
+    public function testFlushAllLocks()
+    {
+        $this->artisan('locks:flushall')->assertExitCode(0);
     }
 }
