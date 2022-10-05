@@ -2,11 +2,11 @@
 
 namespace LowerRockLabs\Lockable\Tests;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
-use Carbon\Carbon;
-use LowerRockLabs\Lockable\Tests\Models\User;
 use LowerRockLabs\Lockable\Tests\Models\Note;
+use LowerRockLabs\Lockable\Tests\Models\User;
 
 class LockableTest extends TestCase
 {
@@ -138,7 +138,7 @@ class LockableTest extends TestCase
         Auth::login($user1);
 
         $note = factory(Note::class)->create();
-        $note->modelLockDuration = "8000";
+        $note->modelLockDuration = '8000';
         $note->acquireLock();
         $this->assertTrue(Carbon::now()->addSeconds('4000')->lte($note->lockable->expires_at));
     }
