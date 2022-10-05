@@ -1,8 +1,8 @@
 <?php
 
-use LowerRockLabs\Lockable\Tests\Models\User;
-use Faker\Generator as Faker;
 use Illuminate\Support\Str;
+use Faker\Generator as Faker;
+use LowerRockLabs\Lockable\Tests\Models\User;
 
 /*
 |--------------------------------------------------------------------------

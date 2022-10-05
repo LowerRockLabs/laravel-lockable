@@ -3,13 +3,11 @@
 namespace LowerRockLabs\Lockable\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Orchestra\Testbench\TestCase as Orchestra;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use LowerRockLabs\Lockable\LockableServiceProvider;
 use LowerRockLabs\Lockable\Tests\Models\User;
 use LowerRockLabs\Lockable\Tests\Models\Note;
-
-
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
@@ -18,15 +16,16 @@ class TestCase extends Orchestra
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->withFactories(__DIR__ . '/database/factories');
     }
 
 
     /**
- * Define database migrations.
- *
- * @return void
- */
+     * Define database migrations.
+     *
+     * @return void
+     */
     protected function defineDatabaseMigrations()
     {
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
@@ -39,7 +38,11 @@ class TestCase extends Orchestra
         });
     }
 
-
+    /**
+     * @param mixed $app
+     *
+     * @return array
+     */
     protected function getPackageProviders($app)
     {
         return [
@@ -56,6 +59,7 @@ class TestCase extends Orchestra
     {
         return [];
     }
+
     /**
      * Define environment setup.
      *
