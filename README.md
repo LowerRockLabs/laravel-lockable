@@ -3,6 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/lowerrocklabs/laravel-lockable.svg?style=flat-square)](https://packagist.org/packages/lowerrocklabs/laravel-lockable)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/lowerrocklabs/laravel-lockable/run-tests?label=tests)](https://github.com/lowerrocklabs/laravel-lockable/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/lowerrocklabs/laravel-lockable/Fix%20PHP%20code%20style%20issues?label=code%20style)](https://github.com/lowerrocklabs/laravel-lockable/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+<a href="https://codeclimate.com/github/LowerRockLabs/laravel-lockable/maintainability"><img src="https://api.codeclimate.com/v1/badges/de42e3f05d0cb1629c8d/maintainability" /></a>
 [![Total Downloads](https://img.shields.io/packagist/dt/lowerrocklabs/laravel-lockable.svg?style=flat-square)](https://packagist.org/packages/lowerrocklabs/laravel-lockable)
 
 This model allows for on-demand locking of models.  You can integrate this with your permissions methodology of choice, or leave it stand-alone.  This package allows you to determine whether a particular instance of a model is Locked or Not.  Or it will independently prevent updating of a model instance.
