@@ -47,5 +47,5 @@ jobs:
       - name: Execute tests
         run: |
           vendor/bin/pest --coverage-clover clover.xml
-          php artisan enlightn --ci --report
+          artisan enlightn --ci --report
         
