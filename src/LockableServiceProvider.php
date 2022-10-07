@@ -20,12 +20,10 @@ class LockableServiceProvider extends ServiceProvider
         // $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         // $this->loadRoutesFrom(__DIR__ . '/../routes/lockable.php');
         $this->app->booted(function () {
-            if (config('laravel-lockable.scheduled_task_enable', true))
-            {
+            if (config('laravel-lockable.scheduled_task_enable', true)) {
                 $schedule = app(Schedule::class);
                 $schedule->command('locks:flushexpired')->everyTenMinutes()->runInBackground();
             }
-
         });
 
         if ($this->app->runningInConsole()) {
