@@ -18,4 +18,6 @@ return [
     // Time in Seconds For Lock To Persist
     'duration' => '3600',
 
+    'scheduled_task_enable' => true,
+
 ];
