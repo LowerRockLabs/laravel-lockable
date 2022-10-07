@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
 use LowerRockLabs\Lockable\Events\ModelWasLocked;
-use LowerRockLabs\Lockable\Events\ModelWasUnLocked;
+use LowerRockLabs\Lockable\Events\ModelWasUnlocked;
 use LowerRockLabs\Lockable\Tests\Models\Note;
 use LowerRockLabs\Lockable\Tests\Models\User;
 
@@ -17,6 +17,12 @@ class LockableTest extends TestCase
     public function migrationsContainsModelLocksTable()
     {
         $this->assertTrue(Schema::hasColumn('model_locks', 'user_id'));
+    }
+
+    /** @test */
+    public function migrationsContainsModelLockWatcheresTable()
+    {
+        $this->assertTrue(Schema::hasColumn('model_locks_watchers', 'model_lock_id'));
     }
 
     /** @test */
@@ -177,7 +183,7 @@ class LockableTest extends TestCase
     }
 
     /** @test */
-    public function testEventModelWasUnLocked()
+    public function testEventModelWasUnlocked()
     {
         Event::fake();
 
@@ -187,7 +193,7 @@ class LockableTest extends TestCase
         $note = factory(Note::class)->create();
         $note->acquireLock();
         $note->releaseLock();
-        Event::assertDispatched(ModelWasUnLocked::class);
+        Event::assertDispatched(ModelWasUnlocked::class);
     }
 
     /** @test */

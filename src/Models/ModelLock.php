@@ -4,7 +4,7 @@ namespace LowerRockLabs\Lockable\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use LowerRockLabs\Lockable\Events\ModelWasLocked;
-use LowerRockLabs\Lockable\Events\ModelWasUnLocked;
+use LowerRockLabs\Lockable\Events\ModelWasUnlocked;
 
 class ModelLock extends Model
 {
@@ -17,12 +17,12 @@ class ModelLock extends Model
      */
     protected $dispatchesEvents = [
         'created' => ModelWasLocked::class,
-        'deleted' => ModelWasUnLocked::class,
+        'deleting' => ModelWasUnlocked::class,
     ];
 
     protected $events = [
         'created' => ModelWasLocked::class,
-        'deleted' => ModelWasUnLocked::class,
+        'deleting' => ModelWasUnlocked::class,
     ];
 
     public function __construct()
@@ -38,6 +38,16 @@ class ModelLock extends Model
     public function lockable()
     {
         return $this->morphTo();
+    }
+
+    public function lockWatchers()
+    {
+        return $this->hasMany(ModelLockWatcher::class);
+    }
+
+    public function lockWatcherUsers()
+    {
+        return $this->hasManyThrough(config('auth.providers.users.model'), ModelLockWatcher::class, 'model_lock_id', 'id', 'id', 'user_id');
     }
 
     /**

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use LowerRockLabs\Lockable\Events\ModelUnlockRequested;
 use LowerRockLabs\Lockable\Models\ModelLock;
 
 trait IsLockable
@@ -18,21 +19,31 @@ trait IsLockable
 
     public static function bootIsLockable()
     {
-        static::updating(function (Model $model) {
-            // are we currently acquiring the lock
-            if ($model->acquiringLock) {
-                // if we are, we always want to allow the update
-                $model->acquiringLock = false;
+        if (config('laravel-lockable.get_locked_on_retrieve', true)) {
+            static::retrieved(function (Model $model) {
+                if (! empty($model->lockable)) {
+                    $model->lockHolderName = $model->lockable->user->name;
+                }
+            });
+        }
 
-                return true;
-            }
+        if (config('laravel-lockable.prevent_updating', true)) {
+            static::updating(function (Model $model) {
+                // are we currently acquiring the lock
+                if ($model->acquiringLock) {
+                    // if we are, we always want to allow the update
+                    $model->acquiringLock = false;
 
-            if (! empty($model->lockable) && $model->lockable->user_id == Auth::id()) {
-                return true;
-            }
+                    return true;
+                }
 
-            throw new Exception('User does not hold the lock to this model.');
-        });
+                if (! empty($model->lockable) && $model->lockable->user_id == Auth::id()) {
+                    return true;
+                }
+
+                throw new Exception('User does not hold the lock to this model.');
+            });
+        }
 
         static::updated(function (Model $model) {
             if ($model->lockable->user_id == Auth::id()) {
@@ -84,6 +95,8 @@ trait IsLockable
 
         $lock->expires_at = Carbon::now()->addSeconds($this->lockDuration);
         $lock->save();
+
+        return true;
     }
 
     /**
@@ -97,5 +110,27 @@ trait IsLockable
             $this->acquiringLock = true;
         }
         $lockables = $this->lockable->first()->delete();
+
+        return true;
+    }
+
+    /**
+     * Request the lock for this model
+     */
+    public function requestLock($user)
+    {
+        $this->user = Auth::user();
+        $authModel = get_class($this->user);
+        $authID = $this->user->id;
+        // set the flag to make sure that locks can be released
+        if ($this->lockable->lockWatchers()->where('user_type', $authModel)->where('user_id', $authID)->count() < 1) {
+            $newLockWatcher = $this->lockable->lockWatchers()->create();
+            $newLockWatcher->user_id = $authID;
+            $newLockWatcher->user_type = $authModel;
+            $newLockWatcher->save();
+        }
+        ModelUnlockRequested::dispatch($this->lockable, $user);
+
+        return true;
     }
 }

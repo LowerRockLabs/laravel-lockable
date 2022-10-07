@@ -41,7 +41,16 @@ class LockableServiceProvider extends PackageServiceProvider
                 $this->publishes([
                     __DIR__.'/../database/migrations/create_model_locks_table.php' => database_path("/migrations/{$timestamp}_create_model_locks_table.php"),
                 ], 'migrations');
+
+                $this->publishes([
+                    __DIR__.'/../database/migrations/create_model_lock_watchers_table.php' => database_path("/migrations/{$timestamp}_create_model_lock_watchers_table.php"),
+                ], 'migrations');
             }
+            $this->loadTranslationsFrom(__DIR__.'/../lang', 'laravel-lockable');
+
+            $this->publishes([
+                __DIR__.'/../resources/lang' => resource_path('lang/vendor/lowerrocklabs'),
+            ], 'lang');
 
             $this->publishes([
                 __DIR__.'/../config/config.php' => config_path('laravel-lockable.php'),
