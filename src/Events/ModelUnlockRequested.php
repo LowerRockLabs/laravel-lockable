@@ -2,7 +2,6 @@
 
 namespace LowerRockLabs\Lockable\Events;
 
-
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -18,6 +17,7 @@ class ModelUnlockRequested implements ShouldBroadcastNow
     use SerializesModels;
 
     public $modellock;
+
     public $user_id;
 
     /**
