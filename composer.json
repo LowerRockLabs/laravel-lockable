@@ -22,16 +22,16 @@
     },
     "require-dev": {
         "laravel/legacy-factories": "^1.0.4",
-        "nunomaduro/collision": "^5.0|^6.0",
+        "nunomaduro/collision": "^5.0|^6.0|^7.0",
         "nunomaduro/larastan": "^1.0|^2.0.1",
         "orchestra/testbench": "^6.0|^7.9",
-        "pestphp/pest": "^1.21",
-        "pestphp/pest-plugin-laravel": "^1.1",
+        "pestphp/pest": "^1.21|^2.0",
+        "pestphp/pest-plugin-laravel": "^1.1^2.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
-        "phpunit/php-code-coverage": "^9.2",
-        "phpunit/phpunit": "^9.5"
+        "phpunit/php-code-coverage": "^9.2|^10.0",
+        "phpunit/phpunit": "^9.5|^10.0"
     },
     "autoload": {
         "psr-4": {
