@@ -25,6 +25,7 @@ class LockableServiceProvider extends ServiceProvider
                 $schedule->command('locks:flushexpired')->everyTenMinutes()->runInBackground();
             }
         });
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravellockable');
 
         if ($this->app->runningInConsole()) {
             if (! class_exists(\CreateModelLocksTable::class)) {
@@ -38,7 +39,7 @@ class LockableServiceProvider extends ServiceProvider
                     __DIR__.'/../database/migrations/create_model_lock_watchers_table.php' => database_path("/migrations/{$timestamp}_create_model_lock_watchers_table.php"),
                 ], 'migrations');
             }
-            $this->loadTranslationsFrom(__DIR__.'/../lang', 'laravel-lockable');
+            $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravellockable');
 
             $this->publishes([
                 __DIR__.'/../resources/lang' => resource_path('lang/vendor/lowerrocklabs'),
