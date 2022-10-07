@@ -120,9 +120,9 @@ trait IsLockable
     public function requestLock($user)
     {
         $this->user = Auth::user();
+
         $authModel = get_class($this->user);
         $authID = $this->user->id;
-        // set the flag to make sure that locks can be released
         if ($this->lockable->lockWatchers()->where('user_type', $authModel)->where('user_id', $authID)->count() < 1) {
             $newLockWatcher = $this->lockable->lockWatchers()->create();
             $newLockWatcher->user_id = $authID;

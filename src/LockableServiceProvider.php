@@ -3,6 +3,7 @@
 namespace LowerRockLabs\Lockable;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Console\Scheduling\Schedule;
 use LowerRockLabs\Lockable\Commands\FlushAll;
 use LowerRockLabs\Lockable\Commands\FlushExpired;
 use LowerRockLabs\Lockable\Models\ModelLock;
@@ -18,6 +19,10 @@ class LockableServiceProvider extends ServiceProvider
         // $this->loadViewsFrom(__DIR__ . '/../resources/views', 'lockable');
         // $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         // $this->loadRoutesFrom(__DIR__ . '/../routes/lockable.php');
+        $this->app->booted(function () {
+            $schedule = app(Schedule::class);
+            $schedule->command('locks:flushexpired')->everyTenMinutes()->runInBackground();
+        });
 
         if ($this->app->runningInConsole()) {
             if (! class_exists(\CreateModelLocksTable::class)) {
