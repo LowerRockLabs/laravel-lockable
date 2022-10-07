@@ -9,9 +9,7 @@
 This model allows for on-demand locking of models.  You can integrate this with your permissions methodology of choice, or leave it stand-alone.  This package allows you to determine whether a particular instance of a model is Locked or Not.  Or it will independently prevent updating of a model instance.
 
 ## Installation
-> **Requires [PHP 7.3+ or 8.0+](https://php.net/releases/)**
-This Also
-> **Requires [Laravel 8.x or 9.x] (https://laravel.com/docs/8.x/releases or https://laravel.com/docs/9.x/releases)**
+> **Requires [PHP 7.3+ or 8.0+] and [Laravel 8.x or 9.x] (https://laravel.com/docs/8.x/releases or https://laravel.com/docs/9.x/releases)**
 
 You can install the package via composer:
 
