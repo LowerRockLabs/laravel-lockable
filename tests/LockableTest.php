@@ -10,6 +10,7 @@ use LowerRockLabs\Lockable\Events\ModelWasLocked;
 use LowerRockLabs\Lockable\Events\ModelWasUnlocked;
 use LowerRockLabs\Lockable\Tests\Models\Note;
 use LowerRockLabs\Lockable\Tests\Models\User;
+use LowerRockLabs\Lockable\Tests\Models\Admin;
 
 class LockableTest extends TestCase
 {
