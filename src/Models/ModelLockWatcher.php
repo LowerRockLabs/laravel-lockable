@@ -16,7 +16,7 @@ class ModelLockWatcher extends Model
     /**
      * Watchable model relation.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function modelLock()
     {
