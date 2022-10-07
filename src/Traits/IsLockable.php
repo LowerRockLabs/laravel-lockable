@@ -19,26 +19,31 @@ trait IsLockable
 
     public static function bootIsLockable()
     {
-        static::retrieved(function (Model $model) {
-            if (! empty($model->lockable)) {
-                $model->lockHolderName = $model->lockable->user->name;
-            }
-        });
-        static::updating(function (Model $model) {
-            // are we currently acquiring the lock
-            if ($model->acquiringLock) {
-                // if we are, we always want to allow the update
-                $model->acquiringLock = false;
+        if (config('laravel-lockable.get_locked_on_retrieve', true)) {
+            static::retrieved(function (Model $model) {
+                if (! empty($model->lockable)) {
+                    $model->lockHolderName = $model->lockable->user->name;
+                }
+            });
+        }
 
-                return true;
-            }
+        if (config('laravel-lockable.prevent_updating', true)) {
+            static::updating(function (Model $model) {
+                // are we currently acquiring the lock
+                if ($model->acquiringLock) {
+                    // if we are, we always want to allow the update
+                    $model->acquiringLock = false;
 
-            if (! empty($model->lockable) && $model->lockable->user_id == Auth::id()) {
-                return true;
-            }
+                    return true;
+                }
 
-            throw new Exception('User does not hold the lock to this model.');
-        });
+                if (! empty($model->lockable) && $model->lockable->user_id == Auth::id()) {
+                    return true;
+                }
+
+                throw new Exception('User does not hold the lock to this model.');
+            });
+        }
 
         static::updated(function (Model $model) {
             if ($model->lockable->user_id == Auth::id()) {

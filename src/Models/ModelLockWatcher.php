@@ -10,7 +10,7 @@ class ModelLockWatcher extends Model
 
     public function __construct()
     {
-        //$this->table = config('laravel-lockable.lock_watchers_table','model_lock_watchers');
+        $this->table = config('laravel-lockable.lock_watchers_table','model_lock_watchers');
     }
 
     /**
