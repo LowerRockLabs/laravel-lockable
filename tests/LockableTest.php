@@ -20,6 +20,12 @@ class LockableTest extends TestCase
     }
 
     /** @test */
+    public function migrationsContainsModelLockWatcheresTable()
+    {
+        $this->assertTrue(Schema::hasColumn('model_locks_watchers', 'model_lock_id'));
+    }
+
+    /** @test */
     public function migrationsContainsNotesTable()
     {
         $this->assertTrue(Schema::hasColumn('notes', 'title'));

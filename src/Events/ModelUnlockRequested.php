@@ -11,20 +11,22 @@ use Illuminate\Queue\SerializesModels;
 use LowerRockLabs\Lockable\Models\ModelLock;
 use App\Models\User;
 
-class ModelWasUnlocked implements ShouldBroadcastNow
+class ModelUnlockRequested implements ShouldBroadcastNow
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
 
     public $modellock;
+    public $user;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(ModelLock $modellock)
+    public function __construct(ModelLock $modellock, User $user)
     {
         $this->modellock = $modellock;
+        $this->user = $user;
     }
 
     /**
@@ -34,34 +36,16 @@ class ModelWasUnlocked implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        $channels = array();
-        if (!empty($this->modellock->lockWatchers)) {
-            foreach ($this->modellock->lockWatchers as $lockWatcher) {
-
-                $channels[] = new PrivateChannel(str_replace('\\','.',$lockWatcher->user_type) . '.' . $lockWatcher->user_id);
-            }
-        }
-
-        return $channels;
+        return new PrivateChannel('App.Models.User.'.$this->modellock->user_id);
     }
 
-    /**
-     * Get what the event should be broadcasted as
-     *
-     * @return string
-     */
     public function broadcastAs()
     {
-        return 'ModelWasUnlocked';
+        return 'ModelUnlockRequested';
     }
 
-    /**
-     * Get what the event should be broadcasted with
-     *
-     * @return array
-     */
     public function broadcastWith()
     {
-        return ['modeltype' => get_class($this->modellock->lockable), 'modelid' => $this->modellock->lockable->id];
+        return ['id' => $this->user->id, 'modeltype' => get_class($this->modellock->lockable), 'modelid' => $this->modellock->lockable->id];
     }
 }
