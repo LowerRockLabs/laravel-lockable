@@ -22,7 +22,7 @@ class LockableTest extends TestCase
     /** @test */
     public function migrationsContainsModelLockWatcheresTable()
     {
-        $this->assertTrue(Schema::hasColumn('model_locks_watchers', 'model_lock_id'));
+        $this->assertTrue(Schema::hasColumn('model_lock_watchers', 'model_lock_id'));
     }
 
     /** @test */
@@ -156,6 +156,8 @@ class LockableTest extends TestCase
         $note->update(['title' => 'Test Note 4']);
         $note->save();
     }
+
+
 
     /** @test */
     public function testLockDurationIsConfigurablePerModel()
