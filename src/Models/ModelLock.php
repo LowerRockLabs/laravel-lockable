@@ -40,11 +40,6 @@ class ModelLock extends Model
         return $this->morphTo();
     }
 
-    /**
-     * Watchable model relation.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\hasMany
-     */
     public function lockWatchers()
     {
         return $this->hasMany(ModelLockWatcher::class);

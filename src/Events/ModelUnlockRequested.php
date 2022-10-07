@@ -2,7 +2,7 @@
 
 namespace LowerRockLabs\Lockable\Events;
 
-//use App\Models\User;
+
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -18,16 +18,15 @@ class ModelUnlockRequested implements ShouldBroadcastNow
     use SerializesModels;
 
     public $modellock;
-
-    public $user;
+    public $user_id;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(ModelLock $modellock, User $user)
+    public function __construct(ModelLock $modellock, $user_id)
     {
         $this->modellock = $modellock;
-        $this->user = $user;
+        $this->user_id = $user_id;
     }
 
     /**
@@ -47,6 +46,6 @@ class ModelUnlockRequested implements ShouldBroadcastNow
 
     public function broadcastWith()
     {
-        return ['id' => $this->user->id, 'modeltype' => get_class($this->modellock->lockable), 'modelid' => $this->modellock->lockable->id];
+        return ['id' => $this->user_id, 'modeltype' => get_class($this->modellock->lockable), 'modelid' => $this->modellock->lockable->id];
     }
 }
