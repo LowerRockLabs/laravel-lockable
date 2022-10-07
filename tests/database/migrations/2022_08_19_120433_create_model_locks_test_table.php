@@ -49,7 +49,6 @@ class CreateModelLocksTestTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
-
     }
 
     /**

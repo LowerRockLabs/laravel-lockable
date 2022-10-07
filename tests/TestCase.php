@@ -4,8 +4,8 @@ namespace LowerRockLabs\Lockable\Tests;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use LowerRockLabs\Lockable\LockableServiceProvider;
-use LowerRockLabs\Lockable\Tests\Models\User;
 use LowerRockLabs\Lockable\Tests\Models\Admin;
+use LowerRockLabs\Lockable\Tests\Models\User;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -93,7 +93,6 @@ class TestCase extends Orchestra
             'driver' => 'session',
             'provider' => 'admins',
         ]);
-
     }
 
     public function getEnvironmentSetUp($app)
