@@ -2,14 +2,13 @@
 
 namespace LowerRockLabs\Lockable;
 
+use Illuminate\Support\ServiceProvider;
 use LowerRockLabs\Lockable\Commands\FlushAll;
 use LowerRockLabs\Lockable\Commands\FlushExpired;
 use LowerRockLabs\Lockable\Models\ModelLock;
-use Illuminate\Support\ServiceProvider;
 
 class LockableServiceProvider extends ServiceProvider
 {
-
     public function boot()
     {
         /*
