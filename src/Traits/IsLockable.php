@@ -6,8 +6,8 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use LowerRockLabs\Lockable\Models\ModelLock;
 use LowerRockLabs\Lockable\Events\ModelUnlockRequested;
+use LowerRockLabs\Lockable\Models\ModelLock;
 
 trait IsLockable
 {
@@ -20,8 +20,8 @@ trait IsLockable
     public static function bootIsLockable()
     {
         static::retrieved(function (Model $model) {
-            if (!empty($model->lockable)) {
-                    $model->lockHolderName = $model->lockable->user->name;
+            if (! empty($model->lockable)) {
+                $model->lockHolderName = $model->lockable->user->name;
             }
         });
         static::updating(function (Model $model) {
@@ -90,6 +90,7 @@ trait IsLockable
 
         $lock->expires_at = Carbon::now()->addSeconds($this->lockDuration);
         $lock->save();
+
         return true;
     }
 
@@ -124,6 +125,7 @@ trait IsLockable
             $newLockWatcher->save();
         }
         ModelUnlockRequested::dispatch($this->lockable, $user);
+
         return true;
     }
 }

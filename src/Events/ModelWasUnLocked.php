@@ -5,11 +5,10 @@ namespace LowerRockLabs\Lockable\Events;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use LowerRockLabs\Lockable\Models\ModelLock;
-use App\Models\User;
 
 class ModelWasUnlocked implements ShouldBroadcastNow
 {
@@ -34,11 +33,10 @@ class ModelWasUnlocked implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        $channels = array();
-        if (!empty($this->modellock->lockWatchers)) {
+        $channels = [];
+        if (! empty($this->modellock->lockWatchers)) {
             foreach ($this->modellock->lockWatchers as $lockWatcher) {
-
-                $channels[] = new PrivateChannel(str_replace('\\','.',$lockWatcher->user_type) . '.' . $lockWatcher->user_id);
+                $channels[] = new PrivateChannel(str_replace('\\', '.', $lockWatcher->user_type).'.'.$lockWatcher->user_id);
             }
         }
 

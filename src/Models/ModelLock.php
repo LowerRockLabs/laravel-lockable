@@ -3,7 +3,6 @@
 namespace LowerRockLabs\Lockable\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use LowerRockLabs\Lockable\Models\ModelLockWatcher;
 use LowerRockLabs\Lockable\Events\ModelWasLocked;
 use LowerRockLabs\Lockable\Events\ModelWasUnLocked;
 
@@ -45,7 +44,6 @@ class ModelLock extends Model
     {
         return $this->hasMany(ModelLockWatcher::class);
     }
-
 
     public function lockWatcherUsers()
     {

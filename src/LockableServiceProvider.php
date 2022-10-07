@@ -49,9 +49,8 @@ class LockableServiceProvider extends PackageServiceProvider
             $this->loadTranslationsFrom(__DIR__.'/../lang', 'laravel-lockable');
 
             $this->publishes([
-                __DIR__ . '/../resources/lang' => resource_path('lang/vendor/lowerrocklabs'),
+                __DIR__.'/../resources/lang' => resource_path('lang/vendor/lowerrocklabs'),
             ], 'lang');
-
 
             $this->publishes([
                 __DIR__.'/../config/config.php' => config_path('laravel-lockable.php'),

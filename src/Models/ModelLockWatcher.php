@@ -3,12 +3,10 @@
 namespace LowerRockLabs\Lockable\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use LowerRockLabs\Lockable\Models\ModelLock;
 
 class ModelLockWatcher extends Model
 {
     protected $table = 'model_lock_watchers';
-
 
     public function __construct()
     {
@@ -20,7 +18,6 @@ class ModelLockWatcher extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-
     public function modelLock()
     {
         return $this->belongsTo(ModelLock::class);
@@ -35,5 +32,4 @@ class ModelLockWatcher extends Model
     {
         return $this->belongsTo(config('auth.providers.users.model'));
     }
-
 }
