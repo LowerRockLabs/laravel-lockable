@@ -92,6 +92,7 @@ trait IsLockable
 
         $lock = $this->lockable()->firstOrNew();
         $lock->user_id = Auth::id();
+        $lock->user_type = get_class(Auth::user());
 
         $lock->expires_at = Carbon::now()->addSeconds($this->lockDuration);
         $lock->save();
@@ -121,12 +122,11 @@ trait IsLockable
     {
         $this->user = Auth::user();
 
-        $authModel = get_class($this->user);
         $authID = $this->user->id;
         if ($this->lockable->lockWatchers()->where('user_type', $authModel)->where('user_id', $authID)->count() < 1) {
             $newLockWatcher = $this->lockable->lockWatchers()->create();
             $newLockWatcher->user_id = $authID;
-            $newLockWatcher->user_type = $authModel;
+            $newLockWatcher->user_type = get_class(Auth::user());
             $newLockWatcher->save();
         }
         ModelUnlockRequested::dispatch($this->lockable, $user);
