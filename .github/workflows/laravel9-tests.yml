@@ -37,20 +37,12 @@ jobs:
         run: |
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-
       - name: Install dependencies
-        env:
-            ENLIGHTN_USERNAME: ${{ secrets.ENLIGHTN_USERNAME }}
-            ENLIGHTN_API_TOKEN: ${{ secrets.ENLIGHTN_API_TOKEN }}
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "enlightn/enlightn" --no-interaction --no-update
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
-          composer install --no-scripts
-          php artisan enlightn:baseline
-
       - name: List Installed Dependencies
         run: composer show -D
 
       - name: Execute tests
         run: vendor/bin/pest --coverage-clover clover.xml
-
