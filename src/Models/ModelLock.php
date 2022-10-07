@@ -4,7 +4,7 @@ namespace LowerRockLabs\Lockable\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use LowerRockLabs\Lockable\Events\ModelWasLocked;
-use LowerRockLabs\Lockable\Events\ModelWasUnLocked;
+use LowerRockLabs\Lockable\Events\ModelWasUnlocked;
 
 class ModelLock extends Model
 {
@@ -17,12 +17,12 @@ class ModelLock extends Model
      */
     protected $dispatchesEvents = [
         'created' => ModelWasLocked::class,
-        'deleting' => ModelWasUnLocked::class,
+        'deleting' => ModelWasUnlocked::class,
     ];
 
     protected $events = [
         'created' => ModelWasLocked::class,
-        'deleting' => ModelWasUnLocked::class,
+        'deleting' => ModelWasUnlocked::class,
     ];
 
     public function __construct()
