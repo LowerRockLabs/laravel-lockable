@@ -1,6 +1,10 @@
 name: Enlightn Checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-on: [pull_request]
 
 jobs:
   tests:
