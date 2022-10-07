@@ -93,6 +93,29 @@ class LockableTest extends TestCase
     }
 
     /** @test */
+    public function canCreateANoteAndObtainLockAsAdmin()
+    {
+        $admin = factory(Admin::class)->create();
+        $admin->update(['name' => 'Test Admin 2']);
+        $admin->save();
+        Auth::login($admin);
+
+        $note = factory(Note::class)->create();
+
+        $lock = $note->lockable()->firstOrNew();
+        $lock->user_id = Auth::id();
+        $lock->user_type = get_class($admin);
+        $lock->expires_at = Carbon::now()->addSeconds('3600');
+        $lock->save();
+        $note->update(['title' => 'Test Note 1']);
+        $note->save();
+
+        $this->assertEquals('Test Note 1', $note->title);
+        $this->assertEquals($lock->user_type, get_class($admin));
+
+    }
+
+    /** @test */
     public function testNotLockedForSameUser()
     {
         $user1 = factory(User::class)->create();
