@@ -6,7 +6,7 @@ return [
     // Name of the Table containing the locks
     'locks_table' => 'model_locks',
 
-     // Name of the Table containing the lock watchers
+    // Name of the Table containing the lock watchers
     'lock_watchers_table' => 'model_lock_watchers',
 
     // Enable retrieval of lock status on retrieving a model
