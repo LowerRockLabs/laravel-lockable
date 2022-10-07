@@ -17,6 +17,7 @@ class CreateModelLocksTestTable extends Migration
             $table->id();
             $table->uuidMorphs('lockable');
             $table->uuid('user_id')->index();
+            $table->string('user_type');
             $table->timestamp('expires_at');
             $table->timestamps();
             $table->unique(['lockable_id', 'lockable_type'], 'lockable_unique');
@@ -33,10 +34,10 @@ class CreateModelLocksTestTable extends Migration
             $table->id();
             $table->bigInteger('model_lock_id')->unsigned()->index();
             $table->uuid('user_id')->index();
+            $table->string('user_type');
             $table->timestamps();
             $table->unique(['model_lock_id', 'user_id'], 'lock_watch_unique');
             $table->foreign('model_lock_id')->references('id')->on('model_lock_watchers')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         Schema::create('admins', function (Blueprint $table) {
