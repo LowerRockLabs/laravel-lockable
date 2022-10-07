@@ -45,4 +45,7 @@ jobs:
         run: composer show -D
 
       - name: Execute tests
-        run: vendor/bin/pest --coverage-clover clover.xml
+        run: |
+          vendor/bin/pest --coverage-clover clover.xml
+          php artisan enlightn --ci --report
+        
