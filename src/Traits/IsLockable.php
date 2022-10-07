@@ -23,6 +23,7 @@ trait IsLockable
             static::retrieved(function (Model $model) {
                 if (! empty($model->lockable)) {
                     $model->lockHolderName = $model->lockable->user->name;
+                    $model->lockWatcherUsers = $model->lockable->lockWatcherUsers;
                 }
             });
         }
