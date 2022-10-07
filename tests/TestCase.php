@@ -5,6 +5,7 @@ namespace LowerRockLabs\Lockable\Tests;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use LowerRockLabs\Lockable\LockableServiceProvider;
 use LowerRockLabs\Lockable\Tests\Models\User;
+use LowerRockLabs\Lockable\Tests\Models\Admin;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -82,6 +83,17 @@ class TestCase extends Orchestra
             'driver' => 'session',
             'provider' => 'admins',
         ]);
+
+        $app['config']->set('auth.providers.admins.model', Admin::class);
+        $app['config']->set('auth.providers.admins', [
+            'driver' => 'eloquent',
+            'model' => Admin::class,
+        ]);
+        $app['config']->set('auth.guards.admins', [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ]);
+
     }
 
     public function getEnvironmentSetUp($app)
