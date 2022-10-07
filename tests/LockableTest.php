@@ -157,8 +157,6 @@ class LockableTest extends TestCase
         $note->save();
     }
 
-
-
     /** @test */
     public function testLockDurationIsConfigurablePerModel()
     {
