@@ -28,6 +28,16 @@ class CreateModelLocksTestTable extends Migration
             $table->text('body');
             $table->timestamps();
         });
+
+        Schema::create('model_lock_watchers', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('model_lock_id')->unsigned()->index();
+            $table->uuid('user_id')->index();
+            $table->timestamps();
+            $table->unique(['model_lock_id', 'user_id'], 'lock_watch_unique');
+            $table->foreign('model_lock_id')->references('id')->on('model_lock_watchers')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        });
     }
 
     /**
@@ -38,6 +48,7 @@ class CreateModelLocksTestTable extends Migration
     public function down()
     {
         Schema::dropIfExists('model_locks');
+        Schema::dropIfExists('model_lock_watchers');
         Schema::dropIfExists('notes');
     }
 }
