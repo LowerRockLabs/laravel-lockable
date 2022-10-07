@@ -124,7 +124,7 @@ trait IsLockable
         $this->user = Auth::user();
 
         $authID = $this->user->id;
-        if ($this->lockable->lockWatchers()->where('user_type', $authModel)->where('user_id', $authID)->count() < 1) {
+        if ($this->lockable->lockWatchers()->where('user_type', get_class(Auth::user()))->where('user_id', $authID)->count() < 1) {
             $newLockWatcher = $this->lockable->lockWatchers()->create();
             $newLockWatcher->user_id = $authID;
             $newLockWatcher->user_type = get_class(Auth::user());
