@@ -1,4 +1,4 @@
-name: run-tests
+name: laravel8-tests
 
 on:
   push:
