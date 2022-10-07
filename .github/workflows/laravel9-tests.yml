@@ -45,6 +45,7 @@ jobs:
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "enlightn/enlightn" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+          composer install --no-scripts
           php artisan enlightn:baseline
 
       - name: List Installed Dependencies
