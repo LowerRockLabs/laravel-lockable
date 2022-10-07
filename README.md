@@ -10,6 +10,7 @@ This model allows for on-demand locking of models.  You can integrate this with 
 
 ## Installation
 > **Requires [PHP 7.3+ or 8.0+](https://php.net/releases/)**
+This Also
 > **Requires [Laravel 8.x or 9.x] (https://laravel.com/docs/8.x/releases or https://laravel.com/docs/9.x/releases)**
 
 You can install the package via composer:
