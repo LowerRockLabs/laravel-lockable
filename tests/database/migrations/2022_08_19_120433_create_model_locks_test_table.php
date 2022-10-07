@@ -38,6 +38,17 @@ class CreateModelLocksTestTable extends Migration
             $table->foreign('model_lock_id')->references('id')->on('model_lock_watchers')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
+
+        Schema::create('admins', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
     }
 
     /**

@@ -38,6 +38,12 @@ class LockableTest extends TestCase
     }
 
     /** @test */
+    public function migrationsContainsAdminsTable()
+    {
+        $this->assertTrue(Schema::hasColumn('admins', 'name'));
+    }
+
+    /** @test */
     public function canCreateAUser()
     {
         // given a user
@@ -49,6 +55,20 @@ class LockableTest extends TestCase
 
         $this->assertEquals('Test User 1', $user->name);
     }
+
+    /** @test */
+    public function canCreateAnAdmin()
+    {
+        // given a user
+        $admin = factory(Admin::class)->create();
+        $admin->update(['name' => 'Test Admin 1']);
+        $admin->save();
+
+        Auth::login($admin);
+
+        $this->assertEquals('Test Admin 1', $admin->name);
+    }
+
 
     /** @test */
     public function canCreateANoteAndObtainLock()
