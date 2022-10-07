@@ -2,7 +2,7 @@
 
 namespace LowerRockLabs\Lockable\Events;
 
-use App\Models\User;
+//use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
