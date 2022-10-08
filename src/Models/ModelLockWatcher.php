@@ -4,6 +4,29 @@ namespace LowerRockLabs\Lockable\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * LowerRockLabs\Lockable\Models\ModelLockWatcher
+ *
+ * @property int $id
+ * @property int $model_lock_id
+ * @property string $user_id
+ * @property string $user_type
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \LowerRockLabs\Lockable\Models\ModelLock $modelLock
+ * @property-read Model|\Eloquent $user
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|ModelLockWatcher newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ModelLockWatcher newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ModelLockWatcher query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ModelLockWatcher whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ModelLockWatcher whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ModelLockWatcher whereModelLockId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ModelLockWatcher whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ModelLockWatcher whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ModelLockWatcher whereUserType($value)
+ * @mixin \Eloquent
+ */
 class ModelLockWatcher extends Model
 {
     protected $table = 'model_lock_watchers';
