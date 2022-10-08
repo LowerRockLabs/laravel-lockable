@@ -8,10 +8,11 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
 use LowerRockLabs\Lockable\Events\ModelWasLocked;
 use LowerRockLabs\Lockable\Events\ModelWasUnlocked;
-use LowerRockLabs\Lockable\Models\ModelLockWatcher;
 use LowerRockLabs\Lockable\Tests\Models\Admin;
 use LowerRockLabs\Lockable\Tests\Models\Note;
 use LowerRockLabs\Lockable\Tests\Models\User;
+use LowerRockLabs\Lockable\Models\ModelLock;
+use LowerRockLabs\Lockable\Models\ModelLockWatcher;
 
 class LockableTest extends TestCase
 {
@@ -115,15 +116,16 @@ class LockableTest extends TestCase
         $this->assertModelExists($note);
         $note->releaseLock();
 
+
         Auth::login($user3);
         $note2 = Note::find($noteid);
-        if (! $note2->isLocked()) {
+        if (!$note2->isLocked())
+        {
             $note2->update(['title' => 'Test Note 3']);
             $note2->save();
         }
         $this->assertEquals('Test Note 3', $note2->title);
     }
-
     /** @test */
     public function canCreateANoteObtainLockAndRequest()
     {
@@ -223,6 +225,7 @@ class LockableTest extends TestCase
 
         $this->assertTrue($note2->isLocked());
         $this->assertEquals($lock2->user_id, $user1id);
+
     }
 
     /** @test */
@@ -260,6 +263,7 @@ class LockableTest extends TestCase
 
         $this->assertFalse($note->isLocked());
     }
+
 
     /** @test */
     public function testLockedModelReturnsFalseWhenUpdating()
