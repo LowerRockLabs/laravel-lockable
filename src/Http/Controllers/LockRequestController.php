@@ -13,13 +13,14 @@ class LockRequestController extends BaseController
     {
         try {
             $modelLock = ModelLock::findOrFail($lockRequestID);
-            if (!empty($modelLock) && isset($modelLock->user_id)) {
+            if (! empty($modelLock) && isset($modelLock->user_id)) {
                 if ($modelLock->user_id == Auth::id()) {
                     $modelLock->delete();
                 }
             }
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             session()->flash('message', __('error.modelnotfound'));
+
             return false;
         }
     }
@@ -28,9 +29,9 @@ class LockRequestController extends BaseController
     {
         try {
             $modelLock = ModelLock::findOrFail($lockRequestID);
-            if (!empty(Auth::user())) {
-                if (!empty($modelLock)) {
-                    $mlw = new ModelLockWatcher();
+            if (! empty(Auth::user())) {
+                if (! empty($modelLock)) {
+                    $mlw = new ModelLockWatcher;
                     $mlw->model_lock_id = $modelLock->id;
                     $mlw->user_id = Auth::id();
                     $mlw->user_type = get_class(Auth::user());
@@ -39,6 +40,7 @@ class LockRequestController extends BaseController
             }
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             session()->flash('message', __('error.modelnotfound'));
+
             return false;
         }
     }
