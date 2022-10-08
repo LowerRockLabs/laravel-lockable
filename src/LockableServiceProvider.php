@@ -18,7 +18,6 @@ class LockableServiceProvider extends ServiceProvider
          * Optional methods to load your package assets
          */
         // $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'lockable');
-        /
         // $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         // $this->loadRoutesFrom(__DIR__ . '/../routes/lockable.php');
         $this->app->booted(function () {
