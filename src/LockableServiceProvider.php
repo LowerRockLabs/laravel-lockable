@@ -18,7 +18,7 @@ class LockableServiceProvider extends ServiceProvider
          * Optional methods to load your package assets
          */
         // $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'lockable');
-        // $this->loadViewsFrom(__DIR__ . '/../resources/views', 'lockable');
+        /
         // $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         // $this->loadRoutesFrom(__DIR__ . '/../routes/lockable.php');
         $this->app->booted(function () {
@@ -28,9 +28,8 @@ class LockableServiceProvider extends ServiceProvider
             }
         });
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravellockable');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'laravellockable');
         $this->registerRoutes();
-        Livewire::component('lockable-notification', LockableNotification::class);
-
         if ($this->app->runningInConsole()) {
             if (! class_exists(\CreateModelLocksTable::class)) {
                 $timestamp = date('Y_m_d_His');
