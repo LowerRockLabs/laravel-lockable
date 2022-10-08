@@ -31,7 +31,7 @@ class ModelLockWatcher extends Model
 {
     protected $table = 'model_lock_watchers';
 
-    public $guarded = ['model_lock_id', 'user_id', 'user_type'];
+    protected $guarded = ['model_lock_id', 'user_id', 'user_type'];
 
     public function __construct()
     {
