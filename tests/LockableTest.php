@@ -114,9 +114,8 @@ class LockableTest extends TestCase
         $note->refresh();
         Auth::login($user3);
         $note->requestLock($user3);
-        $lockWatchUser = $note->lockable->lockWatcherUsers->first();
 
-        $this->assertEquals($note->lockable->user->name, $user2->name);
+        $lockWatchUser = $note->lockable->lockWatcherUsers->first();
 
         $mlw = ModelLockWatcher::first();
         $this->assertNotNull($mlw->user->name);
