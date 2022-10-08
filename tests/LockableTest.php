@@ -11,6 +11,7 @@ use LowerRockLabs\Lockable\Events\ModelWasUnlocked;
 use LowerRockLabs\Lockable\Tests\Models\Admin;
 use LowerRockLabs\Lockable\Tests\Models\Note;
 use LowerRockLabs\Lockable\Tests\Models\User;
+use LowerRockLabs\Lockable\Models\ModelLockWatcher;
 
 class LockableTest extends TestCase
 {
@@ -114,6 +115,9 @@ class LockableTest extends TestCase
         $note->requestLock($user3);
         $lockWatchUser = $note->lockable->lockWatcherUsers->first();
 
+
+        $mlw = ModelLockWatcher::first();
+        $this->assertNotNull($mlw->user->name);
         $this->assertEquals($user3->id, $lockWatchUser->id);
     }
 
@@ -201,6 +205,7 @@ class LockableTest extends TestCase
 
         $this->assertFalse($note->isLocked());
     }
+
 
     /** @test */
     public function testLockedModelReturnsFalseWhenUpdating()
