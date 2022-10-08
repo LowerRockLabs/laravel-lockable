@@ -20,4 +20,9 @@ return [
 
     'scheduled_task_enable' => true,
 
+    // Routes
+    'publish_routes' => true,
+    'prefix' => 'lockable',
+    'middleware' => ['web'],
+
 ];

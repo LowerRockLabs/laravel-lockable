@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use LowerRockLabs\Lockable\Commands\FlushAll;
 use LowerRockLabs\Lockable\Commands\FlushExpired;
 use LowerRockLabs\Lockable\Models\ModelLock;
+use Illuminate\Support\Facades\Route;
 
 class LockableServiceProvider extends ServiceProvider
 {
@@ -26,7 +27,7 @@ class LockableServiceProvider extends ServiceProvider
             }
         });
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravellockable');
-        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        $this->registerRoutes();
 
         if ($this->app->runningInConsole()) {
             if (! class_exists(\CreateModelLocksTable::class)) {
@@ -72,6 +73,23 @@ class LockableServiceProvider extends ServiceProvider
             // Registering package commands.
             // $this->commands([]);
         }
+    }
+
+    protected function registerRoutes()
+    {
+        if (config('laravel-lockable.publish_routes', true)) {
+            Route::group($this->routeConfiguration(), function () {
+                $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+            });
+        }
+    }
+
+    protected function routeConfiguration()
+    {
+        return [
+            'prefix' => config('laravel-lockable.prefix'),
+            'middleware' => config('laravel-lockable.middleware'),
+        ];
     }
 
     public function register()
