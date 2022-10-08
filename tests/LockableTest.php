@@ -11,6 +11,7 @@ use LowerRockLabs\Lockable\Events\ModelWasUnlocked;
 use LowerRockLabs\Lockable\Tests\Models\Admin;
 use LowerRockLabs\Lockable\Tests\Models\Note;
 use LowerRockLabs\Lockable\Tests\Models\User;
+use LowerRockLabs\Lockable\Models\ModelLock;
 use LowerRockLabs\Lockable\Models\ModelLockWatcher;
 
 class LockableTest extends TestCase
@@ -93,6 +94,39 @@ class LockableTest extends TestCase
     }
 
     /** @test */
+    public function canCreateNoteRelinquishLock()
+    {
+        $user2 = factory(User::class)->create();
+        $user2->update(['name' => 'Test User 2']);
+        $user2->save();
+
+        $user3 = factory(User::class)->create();
+        $user3->update(['name' => 'Test User 3']);
+        $user3->save();
+
+        $this->assertModelExists($user2);
+        $this->assertModelExists($user3);
+
+        Auth::login($user2);
+        $note = factory(Note::class)->create();
+        $note->update(['title' => 'Test Note 1']);
+        $note->save();
+
+        $noteid = $note->id;
+        $this->assertModelExists($note);
+        $note->releaseLock();
+
+
+        Auth::login($user3);
+        $note2 = Note::find($noteid);
+        if (!$note2->isLocked())
+        {
+            $note2->update(['title' => 'Test Note 3']);
+            $note2->save();
+        }
+        $this->assertEquals('Test Note 3', $note2->title);
+    }
+    /** @test */
     public function canCreateANoteObtainLockAndRequest()
     {
         $user2 = factory(User::class)->create();
@@ -148,6 +182,7 @@ class LockableTest extends TestCase
     public function testNotLockedForSameUser()
     {
         $user1 = factory(User::class)->create();
+
         Auth::login($user1);
 
         $note = factory(Note::class)->create();
@@ -160,15 +195,37 @@ class LockableTest extends TestCase
     public function testIsLockedForAnotherUser()
     {
         $user1 = factory(User::class)->create();
+        $user1->update(['name' => 'Creator']);
+        $user1->save();
+
+        $user2 = factory(User::class)->create();
+        $user2->update(['name' => 'Searcher']);
+        $user2->save();
+
+        $this->assertModelExists($user1);
+        $this->assertModelExists($user2);
+
         Auth::login($user1);
 
         $note = factory(Note::class)->create();
-        $note->acquireLock();
+        $note->update(['title' => 'Test Note 1']);
+        $note->save();
+        $lock = $note->lockable()->firstOrNew();
+        $user1id = Auth::id();
+        $lock->user_id = Auth::id();
+        $lock->user_type = get_class($user1);
+        $lock->expires_at = Carbon::now()->addSeconds('3600');
+        $lock->save();
+        $this->assertModelExists($note);
+        $noteid = $note->id;
 
-        $user2 = factory(User::class)->create();
         Auth::login($user2);
+        $note2 = Note::find($noteid);
+        $lock2 = $note2->lockable()->firstOrNew();
 
-        $this->assertTrue($note->isLocked());
+        $this->assertTrue($note2->isLocked());
+        $this->assertEquals($lock2->user_id, $user1id);
+
     }
 
     /** @test */
@@ -253,6 +310,9 @@ class LockableTest extends TestCase
 
         $note = factory(Note::class)->create();
         $note->acquireLock();
+        $note->update(['title' => 'Test Note 4']);
+        $note->save();
+        $note->releaseLock();
         Event::assertDispatched(ModelWasLocked::class);
     }
 
