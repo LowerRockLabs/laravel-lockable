@@ -3,12 +3,11 @@
 namespace LowerRockLabs\Lockable;
 
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use LowerRockLabs\Lockable\Commands\FlushAll;
 use LowerRockLabs\Lockable\Commands\FlushExpired;
 use LowerRockLabs\Lockable\Models\ModelLock;
-use LowerRockLabs\Lockable\Http\Livewire\LockableNotification;
-use Illuminate\Support\Facades\Route;
 
 class LockableServiceProvider extends ServiceProvider
 {
@@ -27,7 +26,7 @@ class LockableServiceProvider extends ServiceProvider
             }
         });
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravellockable');
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'laravellockable');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravellockable');
         $this->registerRoutes();
         if ($this->app->runningInConsole()) {
             if (! class_exists(\CreateModelLocksTable::class)) {
