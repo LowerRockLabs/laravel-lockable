@@ -8,6 +8,8 @@ class ModelLockWatcher extends Model
 {
     protected $table = 'model_lock_watchers';
 
+    public $guarded = ['model_lock_id', 'user_id', 'user_type'];
+
     public function __construct()
     {
         $this->table = config('laravel-lockable.lock_watchers_table', 'model_lock_watchers');
