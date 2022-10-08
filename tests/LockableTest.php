@@ -111,6 +111,7 @@ class LockableTest extends TestCase
         $user3 = factory(User::class)->create();
         $user3->update(['name' => 'Test User 3']);
         $user3->save();
+        $note->refresh();
         Auth::login($user3);
         $note->requestLock($user3);
         $lockWatchUser = $note->lockable->lockWatcherUsers->first();
