@@ -213,7 +213,7 @@ class LockableTest extends TestCase
         $lock = $note->lockable()->firstOrNew();
         $user1id = Auth::id();
         $lock->user_id = Auth::id();
-        $lock->user_type = get_class($user1);
+        $lock->user_type = get_class(Auth::user());
         $lock->expires_at = Carbon::now()->addSeconds('3600');
         $lock->save();
         $this->assertModelExists($note);
@@ -254,6 +254,7 @@ class LockableTest extends TestCase
         $note = factory(Note::class)->create();
         $lock = $note->lockable()->firstOrNew();
         $lock->user_id = Auth::id();
+        $lock->user_type = get_class(Auth::user());
         $lock->expires_at = Carbon::now()->subSeconds('3600');
         $lock->save();
 
@@ -333,12 +334,36 @@ class LockableTest extends TestCase
     /** @test */
     public function testFlushExpiredLocks()
     {
+        $user1 = factory(User::class)->create();
+        Auth::login($user1);
+
+        $note = factory(Note::class)->create();
+        $note->update(['title' => 'Test Note 76']);
+        $note->save();
+        $note->acquireLock();
+
+        $note2 = factory(Note::class)->create();
+        $note2->update(['title' => 'Test Note 999']);
+        $note2->save();
+        $lock = $note2->lockable()->firstOrNew();
+        $lock->user_id = Auth::id();
+        $lock->user_type = get_class(Auth::user());
+        $lock->expires_at = Carbon::now()->subSeconds('9000');
+        $lock->save();
+
         $this->artisan('locks:flushexpired')->assertExitCode(0);
     }
 
     /** @test */
     public function testFlushAllLocks()
     {
+        $user1 = factory(User::class)->create();
+        Auth::login($user1);
+
+        $note = factory(Note::class)->create();
+        $note->update(['title' => 'Test Note 4']);
+        $note->save();
+        $note->acquireLock();
         $this->artisan('locks:flushall')->assertExitCode(0);
     }
 }
