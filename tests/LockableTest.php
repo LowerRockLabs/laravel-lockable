@@ -102,6 +102,8 @@ class LockableTest extends TestCase
         $note = factory(Note::class)->create();
         $lock = $note->lockable()->firstOrNew();
         $lock->user_id = Auth::id();
+        $lock->user_type = get_class(Auth::user());
+
         $lock->expires_at = Carbon::now()->addSeconds('3600');
         $lock->save();
 
