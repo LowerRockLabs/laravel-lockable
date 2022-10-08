@@ -39,7 +39,7 @@ class ModelLockWatcher extends Model
     }
 
     /**
-     * Watchable model relation.
+     * Watchable model relation!
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
