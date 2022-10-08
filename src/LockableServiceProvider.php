@@ -26,6 +26,7 @@ class LockableServiceProvider extends ServiceProvider
             }
         });
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravellockable');
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
 
         if ($this->app->runningInConsole()) {
             if (! class_exists(\CreateModelLocksTable::class)) {
