@@ -5,6 +5,7 @@ namespace LowerRockLabs\Lockable\Http\Controllers;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use LowerRockLabs\Lockable\Models\ModelLock;
+use LowerRockLabs\Lockable\Models\ModelLockWatcher;
 
 class LockRequestController extends BaseController
 {
@@ -32,7 +33,19 @@ class LockRequestController extends BaseController
         }
         if (!empty(Auth::user()))
         {
-            $newLock = $modelLock->lockWatchers()->save(Auth::user());
+            if (!empty($modelLock))
+            {
+                $mlw = new ModelLockWatcher();
+                $mlw->model_lock_id = $modelLock->id;
+                $mlw->user_id = Auth::id();
+                $mlw->user_type = get_class(Auth::user());
+                $mlw->save();
+            }
+            //$modelLock->lockWatchers->users->attach(Auth::user());
+            /*$newLock = $modelLock->lockWatchers()->create();
+            $newLock->user_id = Auth::id();
+            $newLock->user_type = get_class(Auth::user());
+            $newLock->save();*/
         }
     }
 }

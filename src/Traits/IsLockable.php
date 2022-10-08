@@ -22,7 +22,7 @@ trait IsLockable
         if (config('laravel-lockable.get_locked_on_retrieve', true)) {
             static::retrieved(function (Model $model) {
                 if (! empty($model->lockable)) {
-                    if (! empty($model->lockable->user)) {
+                    if (!empty($model->lockable->user)) {
                         $model->lockHolderName = $model->lockable->user->name;
                     }
                     $model->lockWatcherUsers = $model->lockable->lockWatcherUsers;
@@ -40,7 +40,7 @@ trait IsLockable
                     return true;
                 }
 
-                if (! empty($model->lockable) && $model->lockable->user_id == Auth::id()) {
+                if (!empty($model->lockable) && $model->lockable->user_id == Auth::id()) {
                     return true;
                 }
 
@@ -53,7 +53,7 @@ trait IsLockable
         }
 
         static::updated(function (Model $model) {
-            if (! empty($model->lockable)) {
+            if (!empty($model->lockable)) {
                 if ($model->lockable->user_id == Auth::id()) {
                     $lockables = $model->lockable->first()->delete();
                 }
@@ -119,12 +119,30 @@ trait IsLockable
         if (! $this->acquiringLock) {
             $this->acquiringLock = true;
         }
-        if (! empty($this->lockable)) {
+        if (!empty($this->lockable)) {
             $lockables = $this->lockable->first()->delete();
         }
 
+
         return true;
     }
+
+    /**
+     * @param mixed $lockID
+     *
+     * @return bool
+     */
+    public function releaseLockByID($lockID)
+    {
+        // set the flag to make sure that locks can be released
+        $modelLockInst = ModelLock::find($lockID);
+        if ($modelLockInst->user_id == Auth::id()) {
+            $modelLockInst->delete();
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * Request the lock for this model
