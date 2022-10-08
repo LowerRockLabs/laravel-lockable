@@ -32,7 +32,7 @@ class LockRequestController extends BaseController
         }
         if (!empty(Auth::user()))
         {
-            $newLock = $modelLock->lockWatchers()->create(Auth::user());
+            $newLock = $modelLock->lockWatchers()->save(Auth::user());
         }
     }
 }
