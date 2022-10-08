@@ -43,11 +43,10 @@ jobs:
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
       - name: List Installed Dependencies
         run: composer show -D
-
       - name: Execute tests
+        run: |
+          vendor/bin/pest --coverage-clover clover.xml
+      - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: 9b0f6d353a0d7c11dff6bb0fcd4d88246ea5b4786b369fe779cedd039a33aa86
-        with:
-          coverageCommand: vendor/bin/pest --coverage-clover clover.xml  
-          debug: true
