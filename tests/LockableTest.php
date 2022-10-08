@@ -118,6 +118,7 @@ class LockableTest extends TestCase
 
         $mlw = ModelLockWatcher::first();
         $this->assertNotNull($mlw->user->name);
+        $this->assertNotNull($mlw->modelLock->lockable->title);
         $this->assertEquals($user3->id, $lockWatchUser->id);
     }
 
@@ -141,7 +142,6 @@ class LockableTest extends TestCase
 
         $this->assertEquals('Test Note 1', $note->title);
         $this->assertEquals($lock->user_type, get_class($admin));
-
     }
 
     /** @test */
