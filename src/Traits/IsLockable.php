@@ -22,7 +22,7 @@ trait IsLockable
         if (config('laravel-lockable.get_locked_on_retrieve', true)) {
             static::retrieved(function (Model $model) {
                 if (! empty($model->lockable)) {
-                    if (!empty($model_>lockable->user))
+                    if (!empty($model->lockable->user))
                     {
                         $model->lockHolderName = $model->lockable->user->name;
                     }
