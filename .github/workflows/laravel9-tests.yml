@@ -31,7 +31,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
-          coverage: none
+          coverage: xdebug
 
       - name: Setup problem matchers
         run: |
@@ -45,8 +45,10 @@ jobs:
         run: composer show -D
       - name: Execute tests
         run: |
-          vendor/bin/pest --coverage-clover clover.xml
-      - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@v3.0.0
-        env:
-          CC_TEST_REPORTER_ID: 9b0f6d353a0d7c11dff6bb0fcd4d88246ea5b4786b369fe779cedd039a33aa86
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter && chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+      - name: Run Tests
+        run: |
+          php vendor/bin/pest --coverage-clover clover.xml
+          ./cc-test-reporter after-build -t clover --exit-code $?
+
