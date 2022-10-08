@@ -16,7 +16,7 @@ class LockRequestController extends BaseController
             session()->flash('message', __('error.modelnotfound'));
             return false;
         }
-        if ($modelLock->user_id == Auth:id())
+        if ($modelLock->user_id == Auth::id())
         {
             $modelLock->delete();
         }
