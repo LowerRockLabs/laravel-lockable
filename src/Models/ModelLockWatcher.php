@@ -32,6 +32,5 @@ class ModelLockWatcher extends Model
     {
         //return $this->belongsTo(config('auth.providers.users.model'));
         return $this->morphTo();
-
     }
 }
