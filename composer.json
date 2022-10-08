@@ -17,8 +17,8 @@
     ],
     "require": {
         "php": "^7.3|^8.0",
-        "laravel/framework": "^8.0|^9.19",
-        "illuminate/contracts": "^8.0|^9.0"
+        "illuminate/contracts": "^8.0|^9.0",
+        "laravel/framework": "^8.0|^9.19"
     },
     "require-dev": {
         "laravel/legacy-factories": "^1.0.4",
