@@ -28,7 +28,7 @@ class LockRequestController extends BaseController
     public function request($lockRequestID)
     {
         if (! empty(Auth::user())) {
-            $mlw = new ModelLockWatcher();
+            $mlw = new ModelLockWatcher;
             $mlw->model_lock_id = $lockRequestID;
             $mlw->user_id = Auth::id();
             $mlw->user_type = get_class(Auth::user());
