@@ -15,7 +15,7 @@ class LockRequestController extends BaseController
             $modelLock = ModelLock::findOrFail($lockRequestID);
             if (isset($modelLock->user_id)) {
                 if ($modelLock->user_id == Auth::id()) {
-                    $modelLock->delete();
+                    $modelLock->delete(); //delees
                 }
             }
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
