@@ -1,12 +1,14 @@
 {
-    "name": "lowerrocklabs/laravel-lockable",
-    "description": "Laravel Lockable provides traits to allow for models to be locked",
+    "name": "LowerRockLabs/laravel-livewire-tables-daterangefilter",
+    "description": "A DateRange filter for Rappasoft Laravel Livewire Tables using FlatPickr",
     "keywords": [
-        "LowerRockLabs",
-        "laravel",
-        "laravel-lockable"
+        "lowerrocklabs",
+        "livewire",
+        "datatables",
+        "tables",
+        "laravel"
     ],
-    "homepage": "https://github.com/lowerrocklabs/laravel-lockable",
+    "homepage": "https://github.com/LowerRockLabs/laravel-livewire-tables-daterangefilter",
     "license": "MIT",
     "authors": [
         {
@@ -16,55 +18,41 @@
         }
     ],
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.4|^8.0",
+        "livewire/livewire": "^2.6",
+        "spatie/laravel-package-tools": "^1.4.3",
         "illuminate/contracts": "^8.0|^9.0",
-        "laravel/framework": "^8.0|^9.19"
+        "rappasoft/laravel-livewire-tables": "dev-master"
     },
     "require-dev": {
-        "laravel/legacy-factories": "^1.0.4",
-        "nunomaduro/collision": "^5.0|^6.0|^7.0",
-        "nunomaduro/larastan": "^1.0|^2.0.1",
-        "orchestra/testbench": "^6.0|^7.9",
-        "pestphp/pest": "^1.21|^2.0",
-        "pestphp/pest-plugin-laravel": "^1.1|^2.0",
-        "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0",
-        "phpunit/php-code-coverage": "^9.2|^10.0",
-        "phpunit/phpunit": "^9.5|^10.0"
+        "ext-sqlite3": "*",
+        "orchestra/testbench": "^6.13|^7.0",
+        "phpunit/phpunit": "^9.3",
+        "spatie/laravel-ray": "^1.9"
     },
     "autoload": {
         "psr-4": {
-            "LowerRockLabs\\Lockable\\": "src",
-            "LowerRockLabs\\Lockable\\Database\\Factories\\": "database/factories"
+            "LowerRockLabs\\LaravelLivewireTablesDateRangeFilter\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LowerRockLabs\\Lockable\\Tests\\": "tests"
+            "LowerRockLabs\\LaravelLivewireTablesDateRangeFilter\\Tests\\": "tests"
         }
     },
     "scripts": {
-        "analyse": "vendor/bin/phpstan analyse",
-        "test": "vendor/bin/pest",
-        "test-coverage": "vendor/bin/pest --coverage",
-        "format": "vendor/bin/pint"
+        "psalm": "vendor/bin/psalm",
+        "test": "vendor/bin/phpunit --colors=always",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
     },
     "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "phpstan/extension-installer": true
-        }
+        "sort-packages": true
     },
     "extra": {
         "laravel": {
             "providers": [
-                "LowerRockLabs\\Lockable\\LockableServiceProvider"
-            ],
-            "aliases": {
-                "Lockable": "LowerRockLabs\\Lockable\\Facades\\Lockable"
-            }
+                "LowerRockLabs\\LaravelLivewireTablesDateRangeFilter\\LaravelLivewireTablesDateRangeFilterServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev",
