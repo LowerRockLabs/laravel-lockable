@@ -3,8 +3,8 @@
 namespace LowerRockLabs\Lockable\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use LowerRockLabs\Lockable\Events\ModelWasLocked;
-use LowerRockLabs\Lockable\Events\ModelWasUnlocked;
+use LowerRockLabs\Lockable\Events\{ModelWasLocked,ModelWasUnlocked};
+use Illuminate\Database\Eloquent\Relations\{BelongsTo,HasMany,HasManyThrough,MorphTo};
 
 /**
  * LowerRockLabs\Lockable\Models\ModelLock
@@ -60,30 +60,40 @@ class ModelLock extends Model
 
     /**
      * Watchable model relation.
-     *
+     * 
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function lockable()
+    public function lockable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function lockWatchers()
+    /**
+     * Watchers model relation.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function lockWatchers(): HasMany
     {
         return $this->hasMany(ModelLockWatcher::class);
     }
 
-    public function lockWatcherUsers()
+    /**
+     * Watcher Users model relation.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function lockWatcherUsers(): HasManyThrough
     {
         return $this->hasManyThrough(config('auth.providers.users.model'), ModelLockWatcher::class, 'model_lock_id', 'id', 'id', 'user_id');
     }
 
     /**
      * User model relation.
-     *
+     * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(config('auth.providers.users.model'));
     }

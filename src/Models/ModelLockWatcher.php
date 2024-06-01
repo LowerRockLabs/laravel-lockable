@@ -3,6 +3,7 @@
 namespace LowerRockLabs\Lockable\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\{BelongsTo,MorphTo};
 
 /**
  * LowerRockLabs\Lockable\Models\ModelLockWatcher
@@ -43,7 +44,7 @@ class ModelLockWatcher extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function modelLock()
+    public function modelLock(): BelongsTo
     {
         return $this->belongsTo(ModelLock::class);
     }
@@ -51,11 +52,10 @@ class ModelLockWatcher extends Model
     /**
      * User model relation.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function user()
+    public function user(): MorphTo
     {
-        //return $this->belongsTo(config('auth.providers.users.model'));
         return $this->morphTo();
     }
 }
