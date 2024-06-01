@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use LowerRockLabs\Lockable\Events\ModelUnlockRequested;
 use LowerRockLabs\Lockable\Models\ModelLock;
+use LowerRockLabs\Lockable\Exceptions\LockedByOtherUserException;
 
 trait IsLockable
 {
@@ -47,8 +48,19 @@ trait IsLockable
                 if (empty($model->lockable)) {
                     return true;
                 }
+                
+                try {
+                    if (! empty($model->lockable) && $model->lockable->user_id != Auth::id()) {
+                        throw new LockedByOtherUserException(get_class($model), $model->id, Auth::id());
+                    }
+                }
+                catch (LockedByOtherUserException $e)
+                {
+                    report($e);
+                    return false;
+                }
+                return false;
 
-                throw new Exception('User does not hold the lock to this model.');
             });
         }
 
