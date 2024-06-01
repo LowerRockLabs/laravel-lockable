@@ -5,8 +5,7 @@ namespace LowerRockLabs\Lockable;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use LowerRockLabs\Lockable\Commands\FlushAll;
-use LowerRockLabs\Lockable\Commands\FlushExpired;
+use LowerRockLabs\Lockable\Commands\{FlushAll,FlushExpired};
 use LowerRockLabs\Lockable\Models\ModelLock;
 
 class LockableServiceProvider extends ServiceProvider
@@ -43,33 +42,16 @@ class LockableServiceProvider extends ServiceProvider
 
             $this->publishes([
                 __DIR__.'/../resources/lang' => resource_path('lang/vendor/lowerrocklabs'),
-            ], 'lang');
+            ], 'laravel-lockable-lang');
 
             $this->publishes([
                 __DIR__.'/../config/config.php' => config_path('laravel-lockable.php'),
-            ], 'config');
+            ], 'laravel-lockable-config');
 
             $this->commands([
                 FlushAll::class,
                 FlushExpired::class,
             ]);
-            // Publishing the views.
-            /*$this->publishes([
-                __DIR__ . '/../resources/views' => resource_path('views/vendor/lockable'),
-            ], 'views');*/
-
-            // Publishing assets.
-            /*$this->publishes([
-                __DIR__ . '/../resources/assets' => public_path('vendor/lockable'),
-            ], 'assets');*/
-
-            // Publishing the translation files.
-            /*$this->publishes([
-                __DIR__ . '/../resources/lang' => resource_path('lang/vendor/lockable'),
-            ], 'lang');*/
-
-            // Registering package commands.
-            // $this->commands([]);
         }
     }
 
