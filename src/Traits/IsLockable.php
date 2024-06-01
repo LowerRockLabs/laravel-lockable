@@ -85,12 +85,17 @@ trait IsLockable
     {
         if ($this->hasLock())
         {
-            if ($this->hasExpiredLock())
+            if (!$this->hasExpiredLock())
             {
-                return false;
+                return ($this->lockable->user_id != Auth::id());
             }
-            else if($this->lockable->user_id == Auth::id())
+
+            if($this->lockable->user_id == Auth::id())
             {
+                if (config('laravel-lockable.extend_lock_on_activity'))
+                {
+                    $this->acquireLock();
+                }
                 return false;
             }
             return true;
@@ -122,7 +127,7 @@ trait IsLockable
     /**
      * Acquire the lock for this model
      */
-    public function acquireLock(?int $lockDuration)
+    public function acquireLock(int $lockDuration = 0)
     {
         // set the flag to make sure that locks can be acquired
 
@@ -130,13 +135,13 @@ trait IsLockable
             $this->acquiringLock = true;
         }
 
-        if (isset($lockDuration))
+        if (isset($lockDuration) && $lockDuration != 0)
         {
             $this->lockDuration = $lockDuration;
         }
 
         if (! isset($this->lockDuration)) {
-            $this->lockDuration = (isset($this->modelLockDuration) ? $this->modelLockDuration : config('lockable.duration', '3600'));
+            $this->lockDuration = (isset($this->modelLockDuration) ? $this->modelLockDuration : config('lockable.duration', 3600));
         }
 
         $lock = $this->lockable()->firstOrNew();

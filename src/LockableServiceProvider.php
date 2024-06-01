@@ -34,11 +34,10 @@ class LockableServiceProvider extends ServiceProvider
 
                 $this->publishes([
                     __DIR__.'/../database/migrations/create_model_locks_table.php' => database_path("/migrations/{$timestamp}_create_model_locks_table.php"),
-                ], 'migrations');
-
-                $this->publishes([
                     __DIR__.'/../database/migrations/create_model_lock_watchers_table.php' => database_path("/migrations/{$timestamp}_create_model_lock_watchers_table.php"),
-                ], 'migrations');
+
+                ], 'laravel-lockable-migrations');
+
             }
             $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravellockable');
 

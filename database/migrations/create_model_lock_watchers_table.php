@@ -11,7 +11,7 @@ class CreateModelLockWatchersTable extends Migration
         Schema::create('model_lock_watchers', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('model_lock_id')->unsigned()->index();
-            $table->uuid('user_id')->index();
+            $table->uuidMorphs('user');
             $table->timestamps();
             $table->unique(['model_lock_id', 'user_id'], 'lock_watch_unique');
             $table->foreign('model_lock_id')->references('id')->on('model_lock_watchers')->onDelete('cascade');

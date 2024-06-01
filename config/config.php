@@ -25,4 +25,7 @@ return [
     'prefix' => 'lockable',
     'middleware' => ['web'],
 
+    // Extend Lock on Further Activity
+    'extend_lock_on_activity' => false,
+
 ];
