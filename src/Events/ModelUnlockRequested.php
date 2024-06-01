@@ -18,15 +18,12 @@ class ModelUnlockRequested implements ShouldBroadcastNow
 
     public $modellock;
 
-    public $user_id;
-
     /**
      * Create a new event instance.
      */
-    public function __construct(ModelLock $modellock, $user_id)
+    public function __construct(ModelLock $modellock)
     {
         $this->modellock = $modellock;
-        $this->user_id = $user_id;
     }
 
     /**
@@ -46,6 +43,6 @@ class ModelUnlockRequested implements ShouldBroadcastNow
 
     public function broadcastWith()
     {
-        return ['id' => $this->user_id, 'modeltype' => get_class($this->modellock->lockable), 'modelid' => $this->modellock->lockable->id];
+        return ['id' => $this->modellock->user_id, 'modeltype' => $this->modellock->lockable_type, 'modelid' => $this->modellock->lockable_id];
     }
 }

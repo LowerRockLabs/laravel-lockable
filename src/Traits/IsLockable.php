@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use LowerRockLabs\Lockable\Events\ModelUnlockRequested;
 use LowerRockLabs\Lockable\Models\ModelLock;
 use LowerRockLabs\Lockable\Exceptions\LockedByOtherUserException;
+use App\Models\User;
 
 trait IsLockable
 {
@@ -203,18 +204,17 @@ trait IsLockable
     /**
      * Request the lock for this model
      */
-    public function requestLock($user)
+    public function requestLock()
     {
-        $this->user = Auth::user();
-
-        $authID = $this->user->id;
-        if ($this->lockable->lockWatchers()->where('user_type', get_class(Auth::user()))->where('user_id', $authID)->count() < 1) {
-            $newLockWatcher = $this->lockable->lockWatchers()->create();
-            $newLockWatcher->user_id = $authID;
-            $newLockWatcher->user_type = get_class(Auth::user());
-            $newLockWatcher->save();
+        if ($this->lockable->lockWatchers()->where('user_id', Auth::id())->count() < 1) {
+            $newLockWatcher = $this->lockable->lockWatchers()->create(
+                ['user_id' => Auth::id()]
+            );
+            //$newLockWatcher->user_id = Auth::id();
+            //$newLockWatcher->user_type = get_class(Auth::user());
+            //$newLockWatcher->save();
         }
-        ModelUnlockRequested::dispatch($this->lockable, $user);
+        ModelUnlockRequested::dispatch($this->lockable);
 
         return true;
     }

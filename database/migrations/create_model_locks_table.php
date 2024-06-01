@@ -10,8 +10,8 @@ class CreateModelLocksTable extends Migration
     {
         Schema::create('model_locks', function (Blueprint $table) {
             $table->id();
-            $table->uuidMorphs('lockable');
-            $table->uuidMorphs('user');
+            $table->nullableUuidMorphs('lockable');
+            $table->nullableUuidMorphs('user');
             $table->timestamp('expires_at');
             $table->timestamps();
             $table->unique(['lockable_id', 'lockable_type'], 'lockable_unique');
