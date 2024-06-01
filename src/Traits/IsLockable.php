@@ -66,6 +66,41 @@ trait IsLockable
         return $this->morphOne(ModelLock::class, 'lockable');
     }
 
+    protected function hasLock(): bool
+    {
+        return (!empty($this->lockable));
+    }
+
+    protected function hasExpiredLock(): bool
+    {
+        if (Carbon::now()->gte($this->lockable->expires_at)) {
+            $this->releaseLock();
+            return true;
+        }
+        return false;
+    }
+
+
+    public function isLockedByAnotherUser(): bool
+    {
+        if ($this->hasLock())
+        {
+            if ($this->hasExpiredLock())
+            {
+                return false;
+            }
+            else if($this->lockable->user_id == Auth::id())
+            {
+                return false;
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
     public function isLocked()
     {
         if (! empty($this->lockable) && Carbon::now()->gte($this->lockable->expires_at)) {
@@ -87,12 +122,17 @@ trait IsLockable
     /**
      * Acquire the lock for this model
      */
-    public function acquireLock()
+    public function acquireLock(?int $lockDuration)
     {
         // set the flag to make sure that locks can be acquired
 
         if (! $this->acquiringLock) {
             $this->acquiringLock = true;
+        }
+
+        if (isset($lockDuration))
+        {
+            $this->lockDuration = $lockDuration;
         }
 
         if (! isset($this->lockDuration)) {
