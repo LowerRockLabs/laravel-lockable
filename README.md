@@ -10,7 +10,7 @@
 This model allows for on-demand locking of models.  You can integrate this with your permissions methodology of choice, or leave it stand-alone.  This package allows you to determine whether a particular instance of a model is Locked or Not.  Or it will independently prevent updating of a model instance.
 
 ## Installation
-> **Requires [PHP 7.3+ or 8.0+] and [Laravel 8.x or 9.x] (https://laravel.com/docs/8.x/releases or https://laravel.com/docs/9.x/releases)**
+> **Requires [PHP 7.3+ or 8.0+] and [Laravel 8.x, 9.x, 10.x, 11.x]**
 
 You can install the package via composer:
 
@@ -35,20 +35,31 @@ This is the contents of the published config file, which controls the global loc
 
 ```php
 return [
+
     // Name of the Table containing the locks
     'locks_table' => 'model_locks',
-    
-     // Name of the Table containing the lock watchers
+
+    // Name of the Table containing the lock watchers
     'lock_watchers_table' => 'model_lock_watchers',
-    
+
     // Enable retrieval of lock status on retrieving a model
     'get_locked_on_retrieve' => true,
-    
+
     // Prevent updating if a model is locked by another user
     'prevent_updating' => true,
 
     // Time in Seconds For Lock To Persist
     'duration' => '3600',
+
+    'scheduled_task_enable' => true,
+
+    // Routes
+    'publish_routes' => true,
+    'prefix' => 'lockable',
+    'middleware' => ['web'],
+
+    // Extend Lock on Further Activity
+    'extend_lock_on_activity' => false,
 ];
 ```
 

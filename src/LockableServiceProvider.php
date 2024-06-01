@@ -85,8 +85,8 @@ class LockableServiceProvider extends ServiceProvider
     protected function routeConfiguration()
     {
         return [
-            'prefix' => config('laravel-lockable.prefix'),
-            'middleware' => config('laravel-lockable.middleware'),
+            'prefix' => config('laravel-lockable.prefix', 'lockable'),
+            'middleware' => config('laravel-lockable.middleware', ['web']),
         ];
     }
 

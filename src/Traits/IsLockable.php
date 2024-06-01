@@ -105,7 +105,7 @@ trait IsLockable
 
             if($this->lockable->user_id == Auth::id())
             {
-                if (config('laravel-lockable.extend_lock_on_activity'))
+                if (config('laravel-lockable.extend_lock_on_activity', false))
                 {
                     $this->acquireLock();
                 }
@@ -161,7 +161,7 @@ trait IsLockable
         $lock->user_id = Auth::id();
         $lock->user_type = get_class(Auth::user());
 
-        $lock->expires_at = Carbon::now()->addSeconds($this->lockDuration);
+        $lock->expires_at = Carbon::now()->addSeconds(intval($this->lockDuration) ?? 3600);
         $lock->save();
 
         return true;
